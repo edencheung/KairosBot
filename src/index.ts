@@ -2,6 +2,7 @@ import { Client, Collection, CommandInteraction, Intents } from "discord.js";
 import { readdir } from "fs";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import config from "./util/global";
+import path = require("path");
 
 export const bot: Client = new Client({
   intents: [Intents.FLAGS.DIRECT_MESSAGES],
@@ -24,7 +25,11 @@ readdir(`${__dirname}\\commands`, (err, files) => {
   if (err) return console.error;
   files.forEach((file: string) => {
     if (!file.endsWith(`.js`)) return;
-    const command: Command = require(`${__dirname}\\commands\\${file}`).default;
+    const command: Command = require(path.join(
+      __dirname,
+      "commands",
+      file
+    )).default;
     commands.set(command.data.name, command);
   });
 });
@@ -33,7 +38,11 @@ readdir(`${__dirname}\\events/`, (err, files) => {
   if (err) return console.error;
   files.forEach((file: string) => {
     if (!file.endsWith(`.js`)) return;
-    const event: () => any = require(`${__dirname}\\events\\${file}`).default;
+    const event: () => any = require(path.join(
+      __dirname,
+      "events",
+      file
+    )).default;
     const eventName: string = file.split(`.`)[0];
     bot.on(eventName, event.bind(null, bot));
   });

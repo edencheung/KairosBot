@@ -3,6 +3,7 @@ import { Routes } from "discord-api-types/v9";
 import { CLIENT_ID, TOKEN } from "./config.json";
 import { Command } from ".";
 import { readdir } from "fs/promises";
+import path = require("path");
 
 const commands: Array<any> = [];
 
@@ -13,7 +14,11 @@ const rest = new REST({ version: "9" }).setToken(TOKEN);
 
   files.forEach((file: string) => {
     if (!file.endsWith(`.js`)) return;
-    const command: Command = require(`${__dirname}\\commands\\${file}`).default;
+    const command: Command = require(path.join(
+      __dirname,
+      "commands",
+      file
+    )).default;
     commands.push(command.data.toJSON());
   });
 
