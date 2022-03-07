@@ -10,7 +10,7 @@ const commands: Array<any> = [];
 const rest = new REST({ version: "9" }).setToken(TOKEN);
 
 (async () => {
-  const files = await readdir(`${__dirname}\\commands`);
+  const files = await readdir(path.join(__dirname, "commands"));
 
   files.forEach((file: string) => {
     if (!file.endsWith(`.js`)) return;
