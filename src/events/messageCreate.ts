@@ -1,99 +1,108 @@
-import { Client, Message } from "discord.js";
-import {
-  ArgumentType,
-  Command,
-  commands,
-  testIfArgumentValid,
-  config,
-  CommandType,
-} from "..";
-
-let recentCommands: Array<string> = [];
+import { Client, Message, MessageEmbed } from "discord.js";
+import { DateTime } from "luxon";
+import { usersTzDB } from "../commands/set-my-tz";
 
 export default async (bot: Client, msg: Message) => {
-  if (msg.author.bot) return;
+  const content = msg.content;
 
-  let phrases: Array<string> = msg.content
-    .substring(config.PREFIX.length)
-    .match(/\\?.|^$/g)
-    .reduce(
-      (p: any, c) => {
-        if (c === '"') {
-          p.quote ^= 1;
-        } else if (!p.quote && c === " ") {
-          p.a.push("");
-        } else {
-          p.a[p.a.length - 1] += c.replace(/\\(.)/, "$1");
-        }
-        return p;
-      },
-      { a: [""] }
-    ).a;
+  //If there is no time detected
+  if (!/([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g.test(content)) return;
 
-  let commandName = phrases[0];
-  let args = phrases.splice(1);
+  //If the timezone is not set for the user
+  if (usersTzDB.get(msg.author.id) == undefined) return;
 
-  let content: string = msg.content.substring(0);
+  let timestamps: {
+    input: string;
+    timestamp: string;
+  }[] = [];
+  const inputTimes = content.matchAll(
+    /([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g
+  );
+  for (const inputTime of inputTimes) {
+    const [time] = inputTime;
+    let hour = parseInt(time.split(":")[0]);
+    let min = parseInt(time.split(":")[1]);
+    const { index } = inputTime;
+    let tempStr = content.substring(index + 5).trim();
+    //check if there it is in "PM" trailing it
+    if (hour < 12 && /^(pm|PM)(?![a-zA-Z])/g.test(tempStr)) hour += 12;
 
-  if (content.substring(0, config.PREFIX.length) == config.PREFIX) {
-    let command: Command =
-      commands.get(commandName) ??
-      commands.find((cmd) => cmd.aliases.includes(commandName));
+    //remove am/pm if present
+    if (/^(am|AM|pm|PM)(?![a-zA-Z])/g.test(tempStr))
+      tempStr = tempStr.trim().substring(2).trim();
 
-    if (command) {
-      try {
-        if (command.type == CommandType.DM && msg.guild) {
-          return msg.channel.send("This command can only be used in DMs!");
-        }
-        if (command.type == CommandType.Guild && !msg.guild) {
-          return msg.channel.send("This command can only be used in a guild!");
-        }
-        if (recentCommands.includes(`${msg.author.id}-${commandName}`)) {
-          return msg.channel.send(
-            "Please wait a while before using this command again."
-          );
-        }
-        if (!command.permissionTest(msg.member ?? msg.author)) {
-          return msg.channel.send(`Access denied.`);
-        }
+    let dayDiff: number = 0;
+    //check if there are words trailing it
 
-        if (
-          command.argTypes &&
-          command.argTypes.some((argTypesArr, index) => {
-            if (!Array.isArray(argTypesArr)) {
-              argTypesArr = [argTypesArr as unknown as ArgumentType];
-            }
-            return !(argTypesArr as Array<ArgumentType>).every(
-              (possibleArgTypes) =>
-                testIfArgumentValid(possibleArgTypes, args[index])
-            );
-          })
-        ) {
-          return msg.channel.send(
-            "Wrong command format; please use the help command."
-          );
-        }
-        recentCommands.push(`${msg.author.id}-${commandName}`);
-
-        setTimeout(() => {
-          recentCommands = recentCommands.filter(
-            (r) => r != `${msg.author.id}-${commandName}`
-          );
-        }, command.cd);
-
-        await command.execute(bot, msg, args, () => {
-          recentCommands = recentCommands.filter(
-            (r) => r != `${msg.author.id}-${commandName}`
-          );
-        });
-      } catch (err) {
-        console.error(err);
-        msg.channel
-          .send(
-            `There was an error trying to execute the ${commandName} command! Please contact the admins.`
-          )
-          .catch(() => {});
-      }
+    //today
+    if (/^(today|tdy)(?![a-zA-Z])/g.test(tempStr)) {
+      tempStr = removeIfStarting(["today", "tdy"], tempStr);
     }
+    //tmr
+    else if (/^(tomorrow|tmr)(?![a-zA-Z])/g.test(tempStr)) {
+      dayDiff++;
+      tempStr = removeIfStarting(["tmr", "tomorrow"], tempStr);
+    }
+    //ytd
+    else if (/^(yesterday|ytd)(?![a-zA-Z])/g.test(tempStr)) {
+      dayDiff--;
+      tempStr = removeIfStarting(["yesterday", "ytd"], tempStr);
+    }
+    // n days later
+    else if (/^[0-9]+(| )(day|days|d) +(later)(?![a-zA-Z])/g.test(tempStr)) {
+      const lengthOfDigits = tempStr
+        .match(/^[0-9]+(| )(day|days|d) +later(?![a-zA-Z])/g)[0]
+        .replace(/[^0-9]/g, "").length;
+      dayDiff += parseInt(tempStr.trim().substring(0, lengthOfDigits));
+      tempStr = tempStr.trim().substring(lengthOfDigits);
+      tempStr = removeIfStarting(["days", "day", "d"], tempStr);
+      tempStr = removeIfStarting(["later"], tempStr);
+    }
+    // n days before
+    else if (
+      /^[0-9]+(| )(day|days|d) +(before|b4|ago)(?![a-zA-Z])/g.test(tempStr)
+    ) {
+      const lengthOfDigits = tempStr
+        .match(/^[0-9]+(| )(day|days|d) +(before|b4|ago)(?![a-zA-Z])/g)[0]
+        .replace(/[^0-9]/g, "").length;
+      dayDiff -= parseInt(tempStr.trim().substring(0, lengthOfDigits));
+      tempStr = tempStr.trim().substring(lengthOfDigits);
+      tempStr = removeIfStarting(["days", "day", "d"], tempStr);
+      tempStr = removeIfStarting(["before", "b4", "ago"], tempStr);
+    }
+
+    //get full date string
+    const inputDateStrLength = content.length - index - tempStr.length;
+    const inputDateStr = content.substring(index, index + inputDateStrLength);
+
+    //make time
+    const userTzOffset = usersTzDB.get(msg.author.id);
+    const date = new Date();
+    const userHour = userTzOffset + date.getUTCHours();
+    const hourDiff = hour - userHour;
+    date.setUTCDate(date.getUTCDate() + dayDiff);
+    date.setUTCHours(date.getUTCHours() + hourDiff);
+    date.setUTCMinutes(min);
+    date.setUTCSeconds(0);
+
+    timestamps.push({
+      input: inputDateStr,
+      timestamp: `<t:${Math.round(date.getTime() / 1000)}:f>`,
+    });
   }
+  msg.reply({
+    embeds: [
+      new MessageEmbed().setDescription(
+        timestamps.map((t) => `**${t.input}:** ${t.timestamp}`).join("\n")
+      ),
+    ],
+    allowedMentions: { repliedUser: false },
+  });
 };
+
+function removeIfStarting(keywords: string[], string: string): string {
+  string = string.trim();
+  for (const keyword of keywords)
+    if (string.startsWith(keyword)) return string.substring(keyword.length);
+  return string;
+}
