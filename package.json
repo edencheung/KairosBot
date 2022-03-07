@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc -w"
+    "dev": "tsc -w",
+    "deploy": "tsc && node build/deploy-commands.js",
+    "launch": "tsc && node build/."
   },
   "repository": {
     "type": "git",

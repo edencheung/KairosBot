@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { CLIENT_ID, GUILD_ID, TOKEN } from "./config.json";
+import { CLIENT_ID, TOKEN } from "./config.json";
 import { Command } from ".";
 import { readdir } from "fs/promises";
 
@@ -18,7 +18,7 @@ const rest = new REST({ version: "9" }).setToken(TOKEN);
   });
 
   rest
-    .put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+    .put(Routes.applicationCommands(CLIENT_ID), {
       body: commands,
     })
     .then(() => console.log("Successfully registered application commands."))

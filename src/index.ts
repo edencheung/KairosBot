@@ -1,10 +1,10 @@
-import { Client, Collection, CommandInteraction } from "discord.js";
+import { Client, Collection, CommandInteraction, Intents } from "discord.js";
 import { readdir } from "fs";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import config from "./util/global";
 
 export const bot: Client = new Client({
-  intents: 49151,
+  intents: [Intents.FLAGS.DIRECT_MESSAGES],
   partials: ["CHANNEL"],
 }); //use 48893 if no privileged intents (GUILD_PRESENCES and GUILD_MEMBERS)
 

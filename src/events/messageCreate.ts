@@ -1,5 +1,4 @@
 import { Client, Message, MessageEmbed } from "discord.js";
-import { DateTime } from "luxon";
 import { usersTzDB } from "../commands/set-my-tz";
 
 export default async (bot: Client, msg: Message) => {
