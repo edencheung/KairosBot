@@ -5,7 +5,12 @@ import config from "./util/global";
 import path = require("path");
 
 export const bot: Client = new Client({
-  intents: [Intents.FLAGS.DIRECT_MESSAGES],
+  intents: [
+    "GUILD_MESSAGES",
+    "DIRECT_MESSAGES",
+    "GUILD_INTEGRATIONS",
+    "GUILDS",
+  ],
   partials: ["CHANNEL"],
 }); //use 48893 if no privileged intents (GUILD_PRESENCES and GUILD_MEMBERS)
 
