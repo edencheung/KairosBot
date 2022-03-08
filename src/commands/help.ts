@@ -35,7 +35,7 @@ export default new Command({
           `> 09:51pm 7 days later\n` +
           `> 11:58 ytd\n` +
           `etc...\n\n` +
-          `[Support server](https://discord.gg/J2xKqDKpGt)`
+          `If you need more help, join the [support server](https://discord.gg/J2xKqDKpGt)!`
       )
       .setFooter({
         iconURL: bot.user.avatarURL(),
