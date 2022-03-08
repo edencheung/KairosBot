@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { bot, Command } from "..";
+import { Command } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 export default new Command({
@@ -41,7 +41,7 @@ export default new Command({
       .setColor(`#384c5c`)
       .setDescription(
         `If you need more help, join the [support server](https://discord.gg/J2xKqDKpGt)!\n\n` +
-          `If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091)`
+          `If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091).`
       );
 
     await interaction.reply({
