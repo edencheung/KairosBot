@@ -13,7 +13,7 @@ export default new Command({
         .setMaxValue(11)
         .setName("hour")
         .setDescription("The hour component of the time")
-        .setRequired(true)
+        .setRequired(false)
     )
     .addIntegerOption((option) =>
       option
@@ -98,7 +98,8 @@ export default new Command({
     const dateObj = new Date();
 
     const userHour = userTzOffset + dateObj.getUTCHours();
-    let hourDiff = <number>interaction.options.get("hour").value - userHour;
+    let hourDiff =
+      <number>interaction.options.get("hour")?.value ?? 0 - userHour;
     if (interaction.options.get("am_pm")?.value == "pm") hourDiff += 12;
 
     const year = interaction.options.get("year")?.value
