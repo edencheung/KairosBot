@@ -5,7 +5,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 export default new Command({
   data: new SlashCommandBuilder()
     .setName("ping")
-    .setDescription("Replies with Pong and the Latency!"),
+    .setDescription('Replies with "Pong" and the latency!'),
   async execute(interaction) {
     const pinging: Message = <Message>await interaction.reply({
       content: "🏓 Pinging...",
@@ -13,7 +13,7 @@ export default new Command({
     });
 
     const embed: MessageEmbed = new MessageEmbed()
-      .setColor(`#3B88C3`)
+      .setColor(`#384c5c`)
       .setTitle(`🏓 Pong!`)
       .setDescription(
         `Bot Latency is **${Math.floor(

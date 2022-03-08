@@ -23,7 +23,7 @@ const rest = new REST({ version: "9" }).setToken(TOKEN);
   });
 
   rest
-    .put(Routes.applicationCommands(CLIENT_ID), {
+    .put(Routes.applicationGuildCommands(CLIENT_ID, "781129041969021000"), {
       body: commands,
     })
     .then(() => {

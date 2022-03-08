@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsc -w",
+    "guild-deploy": "tsc && node build/guild-deploy.js",
     "deploy": "tsc && node build/deploy-commands.js",
     "launch": "tsc && node build/."
   },

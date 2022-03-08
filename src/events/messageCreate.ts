@@ -1,5 +1,5 @@
 import { Client, Message, MessageEmbed } from "discord.js";
-import { usersTzDB } from "../commands/set-my-tz";
+import { usersDB } from "../commands/set-timezone";
 
 export default async (bot: Client, msg: Message) => {
   const content = msg.content;
@@ -8,7 +8,8 @@ export default async (bot: Client, msg: Message) => {
   if (!/([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g.test(content)) return;
 
   //If the timezone is not set for the user
-  if (usersTzDB.get(msg.author.id) == undefined) return;
+  if (usersDB.get(msg.author.id) == undefined) return;
+  if (!usersDB.get(msg.author.id).enabled) return;
 
   let timestamps: {
     input: string;
@@ -75,7 +76,7 @@ export default async (bot: Client, msg: Message) => {
     const inputDateStr = content.substring(index, index + inputDateStrLength);
 
     //make time
-    const userTzOffset = usersTzDB.get(msg.author.id);
+    const userTzOffset = usersDB.get(msg.author.id).timezone;
     const date = new Date();
     const userHour = userTzOffset + date.getUTCHours();
     const hourDiff = hour - userHour;
@@ -91,9 +92,11 @@ export default async (bot: Client, msg: Message) => {
   }
   msg.reply({
     embeds: [
-      new MessageEmbed().setDescription(
-        timestamps.map((t) => `**${t.input}:** ${t.timestamp}`).join("\n")
-      ),
+      new MessageEmbed()
+        .setColor(`#384c5c`)
+        .setDescription(
+          timestamps.map((t) => `**${t.input}:** ${t.timestamp}`).join("\n")
+        ),
     ],
     allowedMentions: { repliedUser: false },
   });
