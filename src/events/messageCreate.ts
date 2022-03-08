@@ -96,7 +96,11 @@ export default async (bot: Client, msg: Message) => {
         .setColor(`#384c5c`)
         .setDescription(
           timestamps.map((t) => `**${t.input}:** ${t.timestamp}`).join("\n")
-        ),
+        )
+        .setFooter({
+          iconURL: bot.user.avatarURL(),
+          text: "If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091)",
+        }),
     ],
     allowedMentions: { repliedUser: false },
   });

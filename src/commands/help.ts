@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { Command } from "..";
+import { bot, Command } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 export default new Command({
@@ -35,7 +35,11 @@ export default new Command({
           `> 09:51pm 7 days later\n` +
           `> 11:58 ytd\n` +
           `etc...`
-      );
+      )
+      .setFooter({
+        iconURL: bot.user.avatarURL(),
+        text: "If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091)",
+      });
 
     await interaction.reply({ embeds: [embed1, embed2], content: null });
   },
