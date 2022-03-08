@@ -34,14 +34,19 @@ export default new Command({
           `> 2:47 8 days ago\n` +
           `> 09:51pm 7 days later\n` +
           `> 11:58 ytd\n` +
-          `etc...\n\n` +
-          `If you need more help, join the [support server](https://discord.gg/J2xKqDKpGt)!`
-      )
-      .setFooter({
-        iconURL: bot.user.avatarURL(),
-        text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091",
-      });
+          `etc...`
+      );
 
-    await interaction.reply({ embeds: [embed1, embed2], content: null });
+    const embed3: MessageEmbed = new MessageEmbed()
+      .setColor(`#384c5c`)
+      .setDescription(
+        `If you need more help, join the [support server](https://discord.gg/J2xKqDKpGt)!\n\n` +
+          `If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091)`
+      );
+
+    await interaction.reply({
+      embeds: [embed1, embed2, embed3],
+      content: null,
+    });
   },
 });
