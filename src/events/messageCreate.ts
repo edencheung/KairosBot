@@ -24,8 +24,11 @@ export default async (bot: Client, msg: Message) => {
     let min = parseInt(time.split(":")[1]);
     const { index } = inputTime;
     let tempStr = content.substring(index + 5).trim();
-    //check if there it is in "PM" trailing it
+    //check if there is "PM" trailing it
     if (hour < 12 && /^(pm|PM)(?![a-zA-Z])/g.test(tempStr)) hour += 12;
+
+    //check if there is "AM" trailing it
+    if (hour == 12 && /^(am|AM)(?![a-zA-Z])/g.test(tempStr)) hour -= 12;
 
     //remove am/pm if present
     if (/^(am|AM|pm|PM)(?![a-zA-Z])/g.test(tempStr))

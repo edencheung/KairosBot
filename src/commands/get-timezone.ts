@@ -23,7 +23,7 @@ export default new Command({
     interaction.reply({
       content: `${userTag}'s timezone is ${
         userTz !== undefined
-          ? "GMT" + (userTz >= 0 ? "+" : "") + userTz
+          ? "UTC" + (userTz >= 0 ? "+" : "") + userTz
           : "unassigned yet"
       }.`,
     });

@@ -9,29 +9,29 @@ export const usersDB = new JSONObjectMap<{
 export const timezones: {
   [tzName: string]: number;
 } = {
-  "GMT-11": -11,
-  "GMT-10": -10,
-  "GMT-9": -9,
-  "GMT-8": -8,
-  "GMT-7": -7,
-  "GMT-6": -6,
-  "GMT-5": -5,
-  "GMT-4": -4,
-  "GMT-3": -3,
-  "GMT-2": -2,
-  "GMT-1": -1,
-  GMT: 0,
-  "GMT+1": 1,
-  "GMT+2": 2,
-  "GMT+3": 3,
-  "GMT+4": 4,
-  "GMT+5": 5,
-  "GMT+6": 6,
-  "GMT+7": 7,
-  "GMT+8": 8,
-  "GMT+9": 9,
-  "GMT+10": 10,
-  "GMT+11": 11,
+  "UTC-11": -11,
+  "UTC-10": -10,
+  "UTC-9": -9,
+  "UTC-8": -8,
+  "UTC-7": -7,
+  "UTC-6": -6,
+  "UTC-5": -5,
+  "UTC-4": -4,
+  "UTC-3": -3,
+  "UTC-2": -2,
+  "UTC-1": -1,
+  UTC: 0,
+  "UTC+1": 1,
+  "UTC+2": 2,
+  "UTC+3": 3,
+  "UTC+4": 4,
+  "UTC+5": 5,
+  "UTC+6": 6,
+  "UTC+7": 7,
+  "UTC+8": 8,
+  "UTC+9": 9,
+  "UTC+10": 10,
+  "UTC+11": 11,
   HKT: 8,
 };
 
@@ -49,7 +49,7 @@ export default new Command({
   async execute(interaction) {
     interaction.reply({
       content: `I have set your timezone to ${
-        "GMT" +
+        "UTC" +
         (interaction.options.get("timezone").value >= 0 ? "+" : "") +
         interaction.options.get("timezone").value
       }!`,

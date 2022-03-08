@@ -14,6 +14,8 @@ export default new Command({
         `key: [] is required and () is optional\n` +
           `**/settimezone [timezone]** - configures your timezone\n` +
           `**/gettimezone (@user)** - gets the timezone of a given user (defaults to yourself)\n` +
+          `**/gettimezonetime [timezone]** - gets the local time of a given timezone\n` +
+          `**/getusertime [@user] - gets the local time of a given user**\n` +
           `**/timestamp [hour] (min) (am_pm) (date) (month) (year) (date_format) (timezone) (include_raw)** - creates a timestamp according to the data you provide\n` +
           `**/enable** - enables automatic timestring detection and translation\n` +
           `**/disable** - disables automatic timestring detection and translation\n` +
@@ -40,7 +42,7 @@ export default new Command({
     const embed3: MessageEmbed = new MessageEmbed()
       .setColor(`#384c5c`)
       .setDescription(
-        `If you need more help, join the [support server](https://discord.gg/J2xKqDKpGt)!\n\n` +
+        `If you need more help, want to suggest a feature or submit a bug report, join the [support server](https://discord.gg/J2xKqDKpGt)!\n\n` +
           `If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091).`
       );
 
