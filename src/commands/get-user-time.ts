@@ -20,7 +20,7 @@ export default new Command({
     )?.timezone;
     const userTag = interaction.options.get("user").user.tag;
 
-    if (!userTz)
+    if (userTz === undefined)
       return interaction.reply(
         `${userTag} has not configured their timezone yet.`
       );
