@@ -99,8 +99,8 @@ export default async (bot: Client, msg: Message) => {
         )
         .setFooter({
           iconURL: bot.user.avatarURL(),
-          text: "If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091)",
-        }),
+          text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091",
+        });
     ],
     allowedMentions: { repliedUser: false },
   });
