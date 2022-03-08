@@ -95,35 +95,41 @@ export default new Command({
         "Please use the `/setmytimezone` command to set your timezone first or provide a timezone for the time."
       );
 
-    const date = new Date();
+    const dateObj = new Date();
 
-    const userHour = userTzOffset + date.getUTCHours();
+    const userHour = userTzOffset + dateObj.getUTCHours();
     let hourDiff = <number>interaction.options.get("hour").value - userHour;
     if (interaction.options.get("am_pm")?.value == "pm") hourDiff += 12;
 
-    date.setUTCFullYear(
-      <number>interaction.options.get("year")?.value ?? date.getUTCFullYear()
-    );
-    date.setUTCMonth(
-      <number>interaction.options.get("month")?.value ?? date.getUTCMonth()
-    );
-    date.setUTCDate(
-      <number>interaction.options.get("date")?.value ?? date.getUTCDate()
-    );
-    date.setUTCHours(date.getUTCHours() + hourDiff);
-    date.setUTCMinutes(<number>interaction.options.get("min")?.value ?? 0);
-    date.setUTCSeconds(0);
+    const year = interaction.options.get("year")?.value
+      ? <number>interaction.options.get("year")?.value
+      : dateObj.getUTCFullYear();
+
+    const month = interaction.options.get("month")?.value
+      ? <number>interaction.options.get("month")?.value - 1
+      : dateObj.getUTCMonth();
+
+    const date = interaction.options.get("date")?.value
+      ? <number>interaction.options.get("date")?.value
+      : dateObj.getUTCDate();
+
+    dateObj.setUTCFullYear(year, month, date);
+    dateObj.setUTCHours(dateObj.getUTCHours() + hourDiff);
+    dateObj.setUTCMinutes(<number>interaction.options.get("min")?.value ?? 0);
+    dateObj.setUTCSeconds(0);
+
+    const epoch = Math.round(dateObj.getTime() / 1000);
 
     interaction.reply({
       embeds: [
         new MessageEmbed()
           .setColor(`#384c5c`)
           .setDescription(
-            `<t:${Math.round(date.getTime() / 1000)}:${
+            `<t:${epoch}:${
               interaction.options.get("date_format")?.value ?? "R"
             }>${
               interaction.options.get("include_raw")?.value
-                ? `\nRaw text: \`<t:${Math.round(date.getTime() / 1000)}:${
+                ? `\nRaw text: \`<t:${epoch}:${
                     interaction.options.get("date_format")?.value ?? "R"
                   }>\``
                 : ""

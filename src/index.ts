@@ -17,7 +17,10 @@ export const bot: Client = new Client({
 export { config, commands };
 
 export class Command {
-  data: Pick<SlashCommandBuilder, "toJSON" | "name" | "description">;
+  data: Pick<
+    SlashCommandBuilder,
+    "toJSON" | "name" | "description" | "options"
+  >;
   execute: (interaction: CommandInteraction) => any;
   constructor(opt: Command) {
     Object.assign(this, opt);
