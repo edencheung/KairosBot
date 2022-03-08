@@ -133,7 +133,6 @@ export default new Command({
             iconURL: bot.user.avatarURL(),
             text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091",
           }),
-        ,
       ],
     });
   },
