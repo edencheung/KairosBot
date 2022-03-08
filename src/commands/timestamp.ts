@@ -88,7 +88,7 @@ export default new Command({
     ),
   async execute(interaction) {
     const userTzOffset =
-      usersDB.get(interaction.user.id).timezone ??
+      usersDB.get(interaction.user.id)?.timezone ??
       <number>interaction.options.get("timezone")?.value;
     if (userTzOffset === undefined)
       return interaction.reply(
