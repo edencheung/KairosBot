@@ -19,10 +19,11 @@ export default new Command({
         interaction.options.get("timezone").value >= 0
           ? `UTC+${interaction.options.get("timezone").value}`
           : `UTC-${interaction.options.get("timezone").value}`
-      } is \`${
+      } is \`${(
+        "0" +
         new Date().getUTCHours() +
         <number>interaction.options.get("timezone").value
-      }:${new Date().getUTCMinutes()}\`.`,
+      ).slice(-2)}:${("0" + new Date().getUTCMinutes()).slice(-2)}\`.`,
     });
   },
 });

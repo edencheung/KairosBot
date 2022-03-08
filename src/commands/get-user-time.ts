@@ -26,9 +26,10 @@ export default new Command({
       );
 
     interaction.reply({
-      content: `${userTag}'s local time is \`${
-        new Date().getUTCHours() + userTz
-      }:${new Date().getUTCMinutes()}\`.`,
+      content: `${userTag}'s local time is \`${(
+        "0" +
+        (new Date().getUTCHours() + userTz)
+      ).slice(-2)}:${("0" + new Date().getUTCMinutes()).slice(-2)}\`.`,
     });
   },
 });
