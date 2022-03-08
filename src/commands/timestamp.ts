@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { Command } from "..";
+import { bot, Command } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { timezones, usersDB } from "./set-timezone";
 
@@ -128,7 +128,12 @@ export default new Command({
                   }>\``
                 : ""
             }`
-          ),
+          )
+          .setFooter({
+            iconURL: bot.user.avatarURL(),
+            text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091",
+          }),
+        ,
       ],
     });
   },
