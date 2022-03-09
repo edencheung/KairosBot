@@ -101,6 +101,11 @@ export default new Command({
     let hourDiff =
       <number>interaction.options.get("hour")?.value ?? 0 - userHour;
     if (interaction.options.get("am_pm")?.value == "pm") hourDiff += 12;
+    if (
+      interaction.options.get("am_pm")?.value == "am" &&
+      interaction.options.get("hour").value === 12
+    )
+      hourDiff -= 12;
 
     const year = interaction.options.get("year")?.value
       ? <number>interaction.options.get("year")?.value

@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { Command } from "..";
+import { bot, Command } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 
 export default new Command({
@@ -7,8 +7,18 @@ export default new Command({
     .setName("help")
     .setDescription("Sends some help!"),
   async execute(interaction) {
+    const embed0: MessageEmbed = new MessageEmbed()
+      .setColor(`#60707d`)
+      .setTitle("Getting started with the bot")
+      .setDescription(
+        `1. Invite ${bot.user} to any server than you want to use me in!\n` +
+          "2. Use `/settimezone` to configure your timezone!\n" +
+          "3. Now type a message that includes one/multiple timestrings! A timestring is something like `12:34 today` or `4:51pm 2d ago`. Use `/timestrings` for more detailed information.\n" +
+          "4. Now enjoy the hassle-free and fully automatic timezone conversion when talking to your friends in another timezone!"
+      );
+
     const embed1: MessageEmbed = new MessageEmbed()
-      .setColor(`#384c5c`)
+      .setColor(`#4c5e6c`)
       .setTitle(`Commands`)
       .setDescription(
         `key: [] is required and () is optional\n` +
@@ -20,26 +30,26 @@ export default new Command({
           `**/enable** - enables automatic timestring detection and translation\n` +
           `**/disable** - disables automatic timestring detection and translation\n` +
           `**/help** - you are looking at me right now 👀\n` +
+          `**/timestrings** - shows you examples of timestrings\n` +
           `**/ping** - replies with "Pong" and the latency`
       );
 
-    const embed2: MessageEmbed = new MessageEmbed()
-      .setColor(`#384c5c`)
-      .setTitle(`How the bot works`)
-      .setDescription(
-        `If you have set your timezone, the bot will automatically reply to any message that it detects a timestring in with the timestamp. ` +
-          `It can also recognise and translate multiple timestrings in a single message. ` +
-          `Here are examples of timestrings:\n` +
-          `> 12:00\n` +
-          `> 9:34 pm\n` +
-          `> 07:34AM tmr\n` +
-          `> 2:47 8 days ago\n` +
-          `> 09:51pm 7 days later\n` +
-          `> 11:58 ytd\n` +
-          `etc...`
-      );
+    // const embed2: MessageEmbed = new MessageEmbed()
+    //   .setTitle(`How the bot works`)
+    //   .setDescription(
+    //     `If you have set your timezone, the bot will automatically reply to any message that it detects a timestring in with the timestamp. ` +
+    //       `It can also recognise and translate multiple timestrings in a single message. ` +
+    //       `Here are examples of timestrings:\n` +
+    //       `> 12:00\n` +
+    //       `> 9:34 pm\n` +
+    //       `> 07:34AM tmr\n` +
+    //       `> 2:47 8 days ago\n` +
+    //       `> 09:51pm 7 days later\n` +
+    //       `> 11:58 ytd\n` +
+    //       `etc...`
+    //   );
 
-    const embed3: MessageEmbed = new MessageEmbed()
+    const embed2: MessageEmbed = new MessageEmbed()
       .setColor(`#384c5c`)
       .setDescription(
         `If you need more help, want to suggest a feature or submit a bug report, join the [support server](https://discord.gg/J2xKqDKpGt)!\n\n` +
@@ -47,7 +57,7 @@ export default new Command({
       );
 
     await interaction.reply({
-      embeds: [embed1, embed2, embed3],
+      embeds: [embed0, embed1, embed2],
       content: null,
     });
   },
