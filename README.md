@@ -19,7 +19,7 @@ KairosBot is a discord bot made by `Eden#2972` for people in different timezones
 
 # 🚀Getting started
 
-You can either use the public version of [KairosBot](https://bit.ly/KairosBot) or host your own kairos bot [here](#🤖hosting-your-own-kairosbot). If you are using the public version, skip to the [How the bot works](#❓how-the-bot-works) section.
+You can either use the public version of [KairosBot](https://bit.ly/KairosBot) or host your own kairos bot [here](#hosting-your-own-kairosbot). If you are using the public version, skip to the [How the bot works](#how-the-bot-works) section.
 
 # 🤖Hosting your own KairosBot
 
