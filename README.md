@@ -74,43 +74,43 @@ Heres an example use case:\
 
 # 📝Commands
 
-> key: [] is required and () is optional<hr>
+> key: [] is required and () is optional
 
 ## /settimezone [timezone]
 
-Configures your timezone<hr>
+Configures your timezone
 
 ## /gettimezone (@user)
 
-Gets the timezone of a given user (defaults to yourself)<hr>
+Gets the timezone of a given user (defaults to yourself)
 
 ## /gettimezonetime [timezone]
 
-Gets the local time of a given timezone<hr>
+Gets the local time of a given timezone
 
 ## /getusertime [@user]
 
-Gets the local time of a given user<hr>
+Gets the local time of a given user
 
 ## /timestamp (hour) (min) (am_pm) (date) (month) (year) (date_format) (timezone) (include_raw)
 
-Creates a timestamp according to the data you provide<hr>
+Creates a timestamp according to the data you provide
 
 ## /enable
 
-Enables automatic timestring detection and translation<hr>
+Enables automatic timestring detection and translation
 
 ## /disable
 
-Disables automatic timestring detection and translation<hr>
+Disables automatic timestring detection and translation
 
 ## /help
 
-Sends you some help<hr>
+Sends you some help
 
 ## /timestrings
 
-shows you examples of timestrings<hr>
+shows you examples of timestrings
 
 ## /ping
 
