@@ -13,7 +13,7 @@ export default new Command({
         content: "Please use `/settimezone` to set your timezone first.",
         ephemeral: true,
       });
-    if (userInfo.enabled)
+    if (!userInfo.enabled)
       return interaction.reply({
         content:
           "You have already disabled timestring detection and translation!",
