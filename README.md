@@ -1,6 +1,6 @@
 <p align="center">
-    <p id=title align="center" style="font-family: Fantasy;font-size: 162px;margin-bottom: -40px;">
-      <img src="https://images-ext-1.discordapp.net/external/mk67v7aLqJzXNRItr4WYQptlCqVDb3pjzTCs7XBmUHg/https/cdn.discordapp.com/avatars/950382032620503091/50f96864ebf0422ad1309f81d577a11b.webp">KairosBot
+    <p id=title align="center">
+      <img src="https://cdn.discordapp.com/attachments/943708746813702154/950993331612168192/KairosBot-Banner.png">
     </p>
   <p align="center">
     <a href="https://discord.gg/J2xKqDKpGt"><img src="https://img.shields.io/discord/950606768621359104?color=5865F2&logo=discord&logoColor=white" alt="Support discord server" /></a>
