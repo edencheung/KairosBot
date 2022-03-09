@@ -89,7 +89,7 @@ export default new Command({
   async execute(interaction) {
     const userTzOffset =
       usersDB.get(interaction.user.id)?.timezone ??
-      <number>interaction.options.get("timezone")?.value;
+      interaction.options.getInteger("timezone");
     if (userTzOffset === undefined)
       return interaction.reply(
         "Please use the `/setmytimezone` command to set your timezone first or provide a timezone for the time."
@@ -98,30 +98,24 @@ export default new Command({
     const dateObj = new Date();
 
     const userHour = userTzOffset + dateObj.getUTCHours();
-    let hourDiff =
-      <number>interaction.options.get("hour")?.value ?? 0 - userHour;
-    if (interaction.options.get("am_pm")?.value == "pm") hourDiff += 12;
-    if (
-      interaction.options.get("am_pm")?.value == "am" &&
-      interaction.options.get("hour").value === 12
-    )
-      hourDiff -= 12;
+    let hourDiff = interaction.options.getInteger("hour") ?? 0 - userHour;
+    if (interaction.options.getString("am_pm") == "pm") hourDiff += 12;
 
-    const year = interaction.options.get("year")?.value
-      ? <number>interaction.options.get("year")?.value
+    const year = interaction.options.getInteger("year")
+      ? interaction.options.getInteger("year")
       : dateObj.getUTCFullYear();
 
-    const month = interaction.options.get("month")?.value
-      ? <number>interaction.options.get("month")?.value - 1
+    const month = interaction.options.getInteger("month")
+      ? interaction.options.getInteger("month") - 1
       : dateObj.getUTCMonth();
 
-    const date = interaction.options.get("date")?.value
-      ? <number>interaction.options.get("date")?.value
+    const date = interaction.options.getInteger("date")
+      ? interaction.options.getInteger("date")
       : dateObj.getUTCDate();
 
     dateObj.setUTCFullYear(year, month, date);
     dateObj.setUTCHours(dateObj.getUTCHours() + hourDiff);
-    dateObj.setUTCMinutes(<number>interaction.options.get("min")?.value ?? 0);
+    dateObj.setUTCMinutes(interaction.options.getInteger("min") ?? 0);
     dateObj.setUTCSeconds(0);
 
     const epoch = Math.round(dateObj.getTime() / 1000);
@@ -132,11 +126,11 @@ export default new Command({
           .setColor(`#384c5c`)
           .setDescription(
             `<t:${epoch}:${
-              interaction.options.get("date_format")?.value ?? "R"
+              interaction.options.getString("date_format") ?? "R"
             }>${
-              interaction.options.get("include_raw")?.value
+              interaction.options.getBoolean("include_raw")
                 ? `\nRaw text: \`<t:${epoch}:${
-                    interaction.options.get("date_format")?.value ?? "R"
+                    interaction.options.getString("date_format") ?? "R"
                   }>\``
                 : ""
             }`
