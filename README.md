@@ -1,5 +1,5 @@
 <p align="center">
-    <p id=title align="center">
+    <p id=title align="center" style="font-family: Fantasy;font-size: 162px;margin-bottom: -40px;">
       <img src="https://images-ext-1.discordapp.net/external/mk67v7aLqJzXNRItr4WYQptlCqVDb3pjzTCs7XBmUHg/https/cdn.discordapp.com/avatars/950382032620503091/50f96864ebf0422ad1309f81d577a11b.webp">KairosBot
     </p>
   <p align="center">
@@ -12,14 +12,6 @@
     </a> 
   </p>
 </p>
-
-<style>
-#title {
-  font-family: Fantasy;
-  font-size: 162px;
-  margin-bottom: -40px;
-}
-</style>
 
 # 📜About KairosBot
 
