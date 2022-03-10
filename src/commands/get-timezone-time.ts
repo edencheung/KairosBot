@@ -18,11 +18,13 @@ export default new Command({
       content: `The local time for ${
         interaction.options.get("timezone").value >= 0
           ? `UTC+${interaction.options.get("timezone").value}`
-          : `UTC-${interaction.options.get("timezone").value}`
+          : `UTC${interaction.options.get("timezone").value}`
       } is \`${(
         "0" +
-        new Date().getUTCHours() +
-        <number>interaction.options.get("timezone").value
+        ((new Date().getUTCHours() +
+          <number>interaction.options.get("timezone").value +
+          24) %
+          24)
       ).slice(-2)}:${("0" + new Date().getUTCMinutes()).slice(-2)}\`.`,
     });
   },

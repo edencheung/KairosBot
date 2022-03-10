@@ -28,7 +28,7 @@ export default new Command({
     interaction.reply({
       content: `${userTag}'s local time is \`${(
         "0" +
-        (new Date().getUTCHours() + userTz)
+        ((new Date().getUTCHours() + userTz + 24) % 24)
       ).slice(-2)}:${("0" + new Date().getUTCMinutes()).slice(-2)}\`.`,
     });
   },

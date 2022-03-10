@@ -6,7 +6,11 @@
     "dev": "tsc -w",
     "guild-deploy": "tsc && node build/guild-deploy.js",
     "deploy": "tsc && node build/deploy-commands.js",
-    "launch": "tsc && node build/."
+    "launch": "tsc && node build/.",
+    "completelaunch": "tsc && node build/deploy-commands.js && node build/.",
+    "serverdeploy": "npm run deploy",
+    "serverlaunch": "npm run launch && pm2 restart 0",
+    "servercompletelaunch": "npm run completelaunch && pm2 restart 0"
   },
   "repository": {
     "type": "git",
