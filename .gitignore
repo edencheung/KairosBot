@@ -3,3 +3,4 @@ build
 *.json
 !package.json
 !package-lock.json
+!tsconfig.json
