@@ -4,12 +4,12 @@
     </p>
   <p align="center">
     <a href="https://discord.gg/J2xKqDKpGt"><img src="https://img.shields.io/discord/950606768621359104?color=5865F2&logo=discord&logoColor=white" alt="Support discord server" /></a>
-    <a href="https://bit.ly/KairosBot"><img src="https://img.shields.io/badge/Invite-KairosBot-5865F2?logo=discord&logoColor=white" alt="Kairos Bot Invite" /></a>
+    <a href="https://top.gg/bot/950382032620503091"><img src="https://img.shields.io/badge/Invite-KairosBot-5865F2?logo=discord&logoColor=white" alt="Kairos Bot Invite" /></a>
   </p>  
   <p align="center">
     <a href="https://top.gg/bot/950382032620503091">
       <img src="https://top.gg/api/widget/950382032620503091.svg">
-    </a> 
+    </a>
   </p>
 </p>
 

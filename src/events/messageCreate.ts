@@ -81,10 +81,11 @@ export default async (bot: Client, msg: Message) => {
     //make time
     const userTzOffset = usersDB.get(msg.author.id).timezone;
     const date = new Date();
-    const userHour = userTzOffset + date.getUTCHours();
+    const UCTHour = date.getUTCHours();
+    const userHour = (userTzOffset + UCTHour + 24) % 24;
     const hourDiff = hour - userHour;
     date.setUTCDate(date.getUTCDate() + dayDiff);
-    date.setUTCHours(date.getUTCHours() + hourDiff);
+    date.setUTCHours(UCTHour + hourDiff);
     date.setUTCMinutes(min);
     date.setUTCSeconds(0);
 
