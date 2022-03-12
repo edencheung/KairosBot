@@ -70,7 +70,7 @@ If you have set your timezone and enabled automatic timestring detection and tra
 > 11:58 ytd\
 
 Heres an example use case:\
-![](https://cdn.discordapp.com/attachments/887637467002458132/950631024247840828/unknown.png)
+![](https://user-images.githubusercontent.com/53995141/158015729-062adf9d-737b-4044-8fdb-41a78b00ef90.)
 
 # 📝Commands
 
