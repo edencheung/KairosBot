@@ -98,7 +98,7 @@ export default new Command({
     const dateObj = new Date();
 
     const userHour = (userTzOffset + dateObj.getUTCHours() + 24) % 24;
-    let hourDiff = interaction.options.getInteger("hour") ?? 0 - userHour;
+    let hourDiff = (interaction.options.getInteger("hour") ?? 0) - userHour;
     if (interaction.options.getString("am_pm") == "pm") hourDiff += 12;
 
     const year = interaction.options.getInteger("year")

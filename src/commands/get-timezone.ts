@@ -16,10 +16,10 @@ export default new Command({
     ),
   async execute(interaction) {
     const userTz = usersDB.get(
-      interaction.options.get("user").user.id ?? interaction.user.id
+      interaction.options.getUser("user")?.id ?? interaction.user.id
     )?.timezone;
     const userTag =
-      interaction.options.get("user")?.user.tag ?? interaction.user.tag;
+      interaction.options.getUser("user")?.tag ?? interaction.user.tag;
     interaction.reply({
       content: `${userTag}'s timezone is ${
         userTz !== undefined
