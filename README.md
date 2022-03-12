@@ -70,7 +70,7 @@ If you have set your timezone and enabled automatic timestring detection and tra
 > 11:58 ytd\
 
 Heres an example use case:\
-![](https://user-images.githubusercontent.com/53995141/158015729-062adf9d-737b-4044-8fdb-41a78b00ef90.)
+![](https://cdn.discordapp.com/attachments/686061884843360256/952161746506895370/KairosBot-Demo.png)
 
 # 📝Commands
 
