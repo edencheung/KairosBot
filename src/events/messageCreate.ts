@@ -99,11 +99,13 @@ export default async (bot: Client, msg: Message) => {
       new MessageEmbed()
         .setColor(`#384c5c`)
         .setDescription(
-          timestamps.map((t) => `**${t.input}:** ${t.timestamp}`).join("\n")
+          timestamps
+            .map((t) => `**${t.input.trim()}:** ${t.timestamp}`)
+            .join("\n")
         )
         .setFooter({
           iconURL: bot.user.avatarURL(),
-          text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091",
+          text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091/vote",
         }),
     ],
     allowedMentions: { repliedUser: false },
