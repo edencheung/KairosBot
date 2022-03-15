@@ -1,4 +1,10 @@
-import { Client, Message, MessageEmbed } from "discord.js";
+import {
+  Client,
+  Message,
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+} from "discord.js";
 import { usersDB } from "../commands/set-timezone";
 
 export default async (bot: Client, msg: Message) => {
@@ -94,21 +100,29 @@ export default async (bot: Client, msg: Message) => {
       timestamp: `<t:${Math.round(date.getTime() / 1000)}:f>`,
     });
   }
+  let description = timestamps
+    .map((t) => `**${t.input.trim()}:** ${t.timestamp}`)
+    .join("\n");
+
+  const componentRows: MessageActionRow[] = [];
+
+  if (true)
+    componentRows.push(
+      new MessageActionRow().addComponents(
+        new MessageButton()
+          .setEmoji("🔼")
+          .setLabel("If you like me, consider upvoting!")
+          .setStyle("LINK")
+          .setURL("https://top.gg/bot/950382032620503091/vote")
+      )
+    );
+
   msg.reply({
     embeds: [
-      new MessageEmbed()
-        .setColor(`#384c5c`)
-        .setDescription(
-          timestamps
-            .map((t) => `**${t.input.trim()}:** ${t.timestamp}`)
-            .join("\n")
-        )
-        .setFooter({
-          iconURL: bot.user.avatarURL(),
-          text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091/vote",
-        }),
+      new MessageEmbed().setColor(`#384c5c`).setDescription(description),
     ],
     allowedMentions: { repliedUser: false },
+    components: componentRows,
   });
 };
 

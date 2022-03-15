@@ -1,6 +1,7 @@
 import { Command } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { usersDB } from "./set-timezone";
+import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -25,11 +26,31 @@ export default new Command({
         `${userTag} has not configured their timezone yet.`
       );
 
+    let description = `\`${(
+      "0" +
+      ((new Date().getUTCHours() + userTz + 24) % 24)
+    ).slice(-2)}:${("0" + new Date().getUTCMinutes()).slice(-2)}\`.`;
+
+    const componentRows: MessageActionRow[] = [];
+
+    if (true)
+      componentRows.push(
+        new MessageActionRow().addComponents(
+          new MessageButton()
+            .setEmoji("🔼")
+            .setLabel("If you like me, consider upvoting!")
+            .setStyle("LINK")
+            .setURL("https://top.gg/bot/950382032620503091/vote")
+        )
+      );
+
     interaction.reply({
-      content: `${userTag}'s local time is \`${(
-        "0" +
-        ((new Date().getUTCHours() + userTz + 24) % 24)
-      ).slice(-2)}:${("0" + new Date().getUTCMinutes()).slice(-2)}\`.`,
+      embeds: [
+        new MessageEmbed()
+          .setTitle(`${userTag}'s local time`)
+          .setDescription(description),
+      ],
+      components: componentRows,
     });
   },
 });

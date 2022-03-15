@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
 import { bot, Command } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { timezones, usersDB } from "./set-timezone";
@@ -120,6 +120,19 @@ export default new Command({
 
     const epoch = Math.round(dateObj.getTime() / 1000);
 
+    const componentRows: MessageActionRow[] = [];
+
+    if (true)
+      componentRows.push(
+        new MessageActionRow().addComponents(
+          new MessageButton()
+            .setEmoji("🔼")
+            .setLabel("If you like me, consider upvoting!")
+            .setStyle("LINK")
+            .setURL("https://top.gg/bot/950382032620503091/vote")
+        )
+      );
+
     interaction.reply({
       embeds: [
         new MessageEmbed()
@@ -134,12 +147,9 @@ export default new Command({
                   }>\``
                 : ""
             }`
-          )
-          .setFooter({
-            iconURL: bot.user.avatarURL(),
-            text: "If you like the bot, consider upvoting it https://top.gg/bot/950382032620503091",
-          }),
+          ),
       ],
+      components: componentRows,
     });
   },
 });
