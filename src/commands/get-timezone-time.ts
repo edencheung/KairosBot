@@ -15,7 +15,7 @@ export default new Command({
     .addNumberOption((option) =>
       option
         .setName("timezone")
-        .setDescription("Your timezone")
+        .setDescription("The timezone you want to check")
         .setRequired(true)
         .setChoices(Object.entries(timezones))
     ),
