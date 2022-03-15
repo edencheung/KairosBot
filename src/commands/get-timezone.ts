@@ -1,6 +1,7 @@
-import { Command } from "..";
+import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { usersDB } from "./set-timezone";
+import { MessageEmbed, TextChannel } from "discord.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -26,6 +27,21 @@ export default new Command({
           ? "UTC" + (userTz >= 0 ? "+" : "") + userTz
           : "unassigned yet"
       }.`,
+    });
+
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed()
+          .setTitle("/gettimezone")
+          .setDescription(
+            `user: ${interaction.options.getUser("user") ?? "N/A"}`
+          )
+          .setAuthor({
+            name: interaction.user.tag,
+            iconURL: interaction.user.avatarURL(),
+          }),
+      ],
     });
   },
 });

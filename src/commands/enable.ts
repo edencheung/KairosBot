@@ -1,6 +1,7 @@
-import { Command } from "..";
+import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { usersDB } from "./set-timezone";
+import { TextChannel, MessageEmbed } from "discord.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -24,6 +25,16 @@ export default new Command({
       content:
         "Successfully enabled automatic timestring detection and translation.",
       ephemeral: true,
+    });
+
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed().setTitle("/disable").setAuthor({
+          name: interaction.user.tag,
+          iconURL: interaction.user.avatarURL(),
+        }),
+      ],
     });
   },
 });

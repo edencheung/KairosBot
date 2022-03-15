@@ -8,4 +8,5 @@ try {
 export default {
   PREFIX: config.PREFIX,
   TOKEN: config.TOKEN,
+  LOG: config.LOG,
 };

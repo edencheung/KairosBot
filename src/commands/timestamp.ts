@@ -1,5 +1,10 @@
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { bot, Command } from "..";
+import {
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+  TextChannel,
+} from "discord.js";
+import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { timezones, usersDB } from "./set-timezone";
 
@@ -150,6 +155,72 @@ export default new Command({
           ),
       ],
       components: componentRows,
+    });
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed()
+          .setTitle("/timestamp")
+          .addFields([
+            {
+              name: "hour",
+              value:
+                interaction.options.getInteger("hour")?.toString() ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "min",
+              value: interaction.options.getInteger("min")?.toString() ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "am_pm",
+              value:
+                interaction.options.getBoolean("am_pm")?.toString() ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "date",
+              value:
+                interaction.options.getInteger("date")?.toString() ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "month",
+              value:
+                interaction.options.getInteger("month")?.toString() ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "year",
+              value:
+                interaction.options.getInteger("year")?.toString() ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "date_format",
+              value: interaction.options.getString("date_format") ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "timezone",
+              value:
+                interaction.options.getInteger("timezone")?.toString() ?? "N/A",
+              inline: true,
+            },
+            {
+              name: "include_raw",
+              value:
+                interaction.options.getBoolean("include_raw")?.toString() ??
+                "N/A",
+              inline: true,
+            },
+          ])
+          .setAuthor({
+            name: interaction.user.tag,
+            iconURL: interaction.user.avatarURL(),
+          }),
+      ],
     });
   },
 });

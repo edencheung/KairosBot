@@ -4,7 +4,9 @@ import {
   MessageActionRow,
   MessageButton,
   MessageEmbed,
+  TextChannel,
 } from "discord.js";
+import { config } from "..";
 import { usersDB } from "../commands/set-timezone";
 
 export default async (bot: Client, msg: Message) => {
@@ -123,6 +125,19 @@ export default async (bot: Client, msg: Message) => {
     ],
     allowedMentions: { repliedUser: false },
     components: componentRows,
+  });
+
+  const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+  logChannel?.send({
+    embeds: [
+      new MessageEmbed()
+        .setTitle("Timestring detected!")
+        .setDescription(msg.url)
+        .setAuthor({
+          name: msg.author.tag,
+          iconURL: msg.author.avatarURL(),
+        }),
+    ],
   });
 };
 

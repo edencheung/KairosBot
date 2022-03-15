@@ -1,5 +1,5 @@
-import { MessageEmbed } from "discord.js";
-import { Command } from "..";
+import { MessageEmbed, TextChannel } from "discord.js";
+import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 export default new Command({
   data: new SlashCommandBuilder()
@@ -29,6 +29,16 @@ export default new Command({
     await interaction.reply({
       embeds: [embed0, embed1],
       content: null,
+    });
+
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed().setTitle("/timestrings").setAuthor({
+          name: interaction.user.tag,
+          iconURL: interaction.user.avatarURL(),
+        }),
+      ],
     });
   },
 });

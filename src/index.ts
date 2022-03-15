@@ -12,7 +12,7 @@ export const bot: Client = new Client({
     "GUILDS",
   ],
   partials: ["CHANNEL"],
-}); //use 48893 if no privileged intents (GUILD_PRESENCES and GUILD_MEMBERS)
+});
 
 export { config, commands };
 

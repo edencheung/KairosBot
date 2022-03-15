@@ -1,7 +1,12 @@
-import { Command } from "..";
+import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { timezones, usersDB } from "./set-timezone";
-import { MessageActionRow, MessageButton } from "discord.js";
+import {
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+  TextChannel,
+} from "discord.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -43,6 +48,21 @@ export default new Command({
     interaction.reply({
       content: `The local time for ${tzName} is \`${tzHourStr}:${tzMinStr}\`.`,
       components: componentRows,
+    });
+
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed()
+          .setTitle("/gettimezonetime")
+          .setDescription(
+            `timezone: ${interaction.options.getInteger("timezone")}`
+          )
+          .setAuthor({
+            name: interaction.user.tag,
+            iconURL: interaction.user.avatarURL(),
+          }),
+      ],
     });
   },
 });

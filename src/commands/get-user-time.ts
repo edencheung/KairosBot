@@ -1,7 +1,12 @@
-import { Command } from "..";
+import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { usersDB } from "./set-timezone";
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
+import {
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+  TextChannel,
+} from "discord.js";
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -51,6 +56,19 @@ export default new Command({
           .setDescription(description),
       ],
       components: componentRows,
+    });
+
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed()
+          .setTitle("/getusertime")
+          .setDescription(`user: ${interaction.options.getUser("user")}`)
+          .setAuthor({
+            name: interaction.user.tag,
+            iconURL: interaction.user.avatarURL(),
+          }),
+      ],
     });
   },
 });

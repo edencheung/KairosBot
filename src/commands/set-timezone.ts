@@ -1,6 +1,7 @@
-import { Command } from "..";
+import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { JSONObjectMap } from "../util/file";
+import { MessageEmbed, TextChannel } from "discord.js";
 export const usersDB = new JSONObjectMap<{
   enabled: boolean;
   timezone: number;
@@ -50,14 +51,28 @@ export default new Command({
     interaction.reply({
       content: `I have set your timezone to ${
         "UTC" +
-        (interaction.options.get("timezone").value >= 0 ? "+" : "") +
-        interaction.options.get("timezone").value
+        (interaction.options.getInteger("timezone") >= 0 ? "+" : "") +
+        interaction.options.getInteger("timezone")
       }!`,
       ephemeral: true,
     });
     usersDB.set(interaction.user.id, {
-      timezone: <number>interaction.options.get("timezone").value,
+      timezone: interaction.options.getInteger("timezone"),
       enabled: true,
+    });
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed()
+          .setTitle("/settimezone")
+          .setDescription(
+            `timezone: ${interaction.options.getInteger("timezone")}`
+          )
+          .setAuthor({
+            name: interaction.user.tag,
+            iconURL: interaction.user.avatarURL(),
+          }),
+      ],
     });
   },
 });
