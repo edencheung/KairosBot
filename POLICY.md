@@ -2,7 +2,7 @@
 
 ### By using KairosBot you accept with its privacy policy.
 
-## 1. What does it store?
+## 1. What data does KairosBot store?
 
 - User IDs and their respective timezone
 
@@ -10,13 +10,13 @@
 
 - Bot developer(s) (`Eden#2972`)
 
-## 3. Why do we store the data?
+## 3. Why does KairosBot store the data?
 
 It stores user IDs and their timezones because:
 
 - Almost all commands require the user's timezone to function properly.
 
-## 4. How can we delete our entire data?
+## 4. How can we delete all our data?
 
 Join our [Support Server](https://discord.gg/J2xKqDKpGt) on discord and contact an online admin/moderator.
 
