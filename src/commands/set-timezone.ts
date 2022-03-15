@@ -51,13 +51,13 @@ export default new Command({
     interaction.reply({
       content: `I have set your timezone to ${
         "UTC" +
-        (interaction.options.getInteger("timezone") >= 0 ? "+" : "") +
-        interaction.options.getInteger("timezone")
+        (interaction.options.getNumber("timezone") >= 0 ? "+" : "") +
+        interaction.options.getNumber("timezone")
       }!`,
       ephemeral: true,
     });
     usersDB.set(interaction.user.id, {
-      timezone: interaction.options.getInteger("timezone"),
+      timezone: interaction.options.getNumber("timezone"),
       enabled: true,
     });
     const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
@@ -66,7 +66,7 @@ export default new Command({
         new MessageEmbed()
           .setTitle("/settimezone")
           .setDescription(
-            `timezone: ${interaction.options.getInteger("timezone")}`
+            `timezone: ${interaction.options.getNumber("timezone")}`
           )
           .setAuthor({
             name: interaction.user.tag,
