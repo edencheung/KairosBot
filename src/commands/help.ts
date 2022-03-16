@@ -31,7 +31,7 @@ export default new Command({
           `**/gettimezone (@user)** - gets the timezone of a given user (defaults to yourself)\n` +
           `**/gettimezonetime [timezone]** - gets the local time of a given timezone\n` +
           `**/getusertime [@user]** - gets the local time of a given user\n` +
-          `**/timestamp [hour] (min) (am_pm) (date) (month) (year) (date_format) (timezone) (include_raw)** - creates a timestamp according to the data you provide\n` +
+          `**/timestamp (hour) (min) (am_pm) (date) (month) (year) (date_format) (timezone) (include_raw)** - creates a timestamp according to the data you provide\n` +
           `**/enable** - enables automatic timestring detection and translation\n` +
           `**/disable** - disables automatic timestring detection and translation\n` +
           `**/help** - you are looking at me right now 👀\n` +

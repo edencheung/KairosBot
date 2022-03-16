@@ -7,10 +7,16 @@ export default async (bot: Client, guild: Guild) => {
     embeds: [
       new MessageEmbed()
         .setTitle("Left guild")
-        .setImage(guild.iconURL())
+        .setThumbnail(guild.iconURL())
         .setDescription(
-          `Name: ${guild.name}\nOwner: ${(await guild.fetchOwner()).user.tag}`
-        ),
+          `Name: ${guild.name}\n` +
+            `Created: ${guild.createdAt}\n` +
+            `Members: ${guild.memberCount}`
+        )
+        .setAuthor({
+          name: (await guild.fetchOwner()).user.tag,
+          iconURL: (await guild.fetchOwner()).user.displayAvatarURL(),
+        }),
     ],
   });
 };

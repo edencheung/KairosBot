@@ -1,6 +1,6 @@
 import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { timezones, usersDB } from "./set-timezone";
+import { timezones } from "./set-timezone";
 import {
   MessageActionRow,
   MessageButton,
