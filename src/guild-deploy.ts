@@ -21,14 +21,18 @@ const rest = new REST({ version: "9" }).setToken(TOKEN);
     )).default;
     commands.push(command.data.toJSON());
   });
-
-  rest
-    .put(Routes.applicationGuildCommands(CLIENT_ID, "781129041969021000"), {
+  await rest.put(
+    Routes.applicationGuildCommands(CLIENT_ID, "781129041969021000"),
+    {
       body: commands,
-    })
-    .then(() => {
-      console.log("Successfully registered application commands.");
-      process.exit();
-    })
-    .catch(console.error);
+    }
+  );
+  await rest.put(
+    Routes.applicationGuildCommands(CLIENT_ID, "918787350849523772"),
+    {
+      body: commands,
+    }
+  );
+  console.log("Successfully registered application commands.");
+  process.exit();
 })();

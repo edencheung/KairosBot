@@ -1,5 +1,6 @@
 import { Client, MessageEmbed, TextChannel } from "discord.js";
 import { config } from "..";
+import { postBotStats } from "../listing-manager";
 
 export default async (bot: Client) => {
   console.log(`${bot.user.username} is online!`);
@@ -9,4 +10,13 @@ export default async (bot: Client) => {
   logChannel?.send({
     embeds: [new MessageEmbed().setTitle("I am now online!")],
   });
+  setInterval(
+    () =>
+      postBotStats().catch((e) =>
+        console.error(
+          `There was an error posting stats to listing sites | ${e}`
+        )
+      ),
+    180000
+  );
 };
