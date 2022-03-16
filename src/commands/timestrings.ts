@@ -24,13 +24,6 @@ export default new Command({
           `etc...`
       );
 
-    const embed1: MessageEmbed = new MessageEmbed()
-      .setColor(`#384c5c`)
-      .setDescription(
-        `If you need more help, want to suggest a feature or submit a bug report, join the [support server](https://discord.gg/J2xKqDKpGt)!\n\n` +
-          `If you like the bot, consider upvoting it [here](https://top.gg/bot/950382032620503091).`
-      );
-
     const buttonRow = new MessageActionRow().setComponents([
       new MessageButton()
         .setEmoji("👤")
@@ -52,7 +45,7 @@ export default new Command({
     ]);
 
     await interaction.reply({
-      embeds: [embed0, embed1],
+      embeds: [embed0],
       content: null,
       components: [buttonRow],
     });
