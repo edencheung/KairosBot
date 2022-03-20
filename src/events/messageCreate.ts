@@ -8,6 +8,7 @@ import {
 } from "discord.js";
 import { config } from "..";
 import { usersDB } from "../commands/set-timezone";
+import { attachCallbackButtons } from "../util/interactions";
 
 export default async (bot: Client, msg: Message) => {
   const content = msg.content;
@@ -16,7 +17,31 @@ export default async (bot: Client, msg: Message) => {
   if (!/([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g.test(content)) return;
 
   //If the timezone is not set for the user
-  if (usersDB.get(msg.author.id) == undefined) return;
+  if (usersDB.get(msg.author.id) == undefined) {
+    attachCallbackButtons(
+      null,
+      await msg.author.send({
+        content:
+          "Hey there, I have detected a timestring but you have not configured your timezone. " +
+          "Please use the `/settimezone` command to set your timezone and `/help` for more information!\n" +
+          "If you do not want to see this message again, simply press the button below.",
+      }),
+      [
+        {
+          emoji: "❌",
+          callback: async (_, botMsg) => {
+            await botMsg.reply(
+              "Thanks for confirming. You will not see this message again."
+            );
+            usersDB.setAttribute(msg.author.id, "timezone", undefined);
+          },
+        },
+      ]
+    );
+    return;
+  }
+  // This means that the user has intentionally disabled timestring detection
+  if (usersDB.get(msg.author.id).timezone == undefined) return;
   if (!usersDB.get(msg.author.id).enabled) return;
 
   let timestamps: {
@@ -31,7 +56,7 @@ export default async (bot: Client, msg: Message) => {
     let hour = parseInt(time.split(":")[0]);
     let min = parseInt(time.split(":")[1]);
     const { index } = inputTime;
-    let tempStr = content.substring(index + 5).trim();
+    let tempStr = content.substring(index + time.length).trim();
     //check if there is "PM" trailing it
     if (hour < 12 && /^(pm|PM)(?![a-zA-Z])/g.test(tempStr)) hour += 12;
 
@@ -132,7 +157,11 @@ export default async (bot: Client, msg: Message) => {
     embeds: [
       new MessageEmbed()
         .setTitle("Timestring detected!")
-        .setDescription(msg.url)
+        .setDescription(
+          `${msg.content.substring(0, 900)}\nServer: ${msg.guild.name}(${
+            msg.guild.id
+          })`
+        )
         .setAuthor({
           name: msg.author.tag,
           iconURL: msg.author.avatarURL(),
