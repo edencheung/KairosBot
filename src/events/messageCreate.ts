@@ -46,7 +46,7 @@ export default async (bot: Client, msg: Message) => {
 
   let timestamps: {
     input: string;
-    timestamp: string;
+    epoch: number;
   }[] = [];
   const inputTimes = content.matchAll(
     /([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g
@@ -124,11 +124,11 @@ export default async (bot: Client, msg: Message) => {
 
     timestamps.push({
       input: inputDateStr,
-      timestamp: `<t:${Math.round(date.getTime() / 1000)}:f>`,
+      epoch: Math.round(date.getTime() / 1000),
     });
   }
   let description = timestamps
-    .map((t) => `**${t.input.trim()}:** ${t.timestamp}`)
+    .map((t) => `**${t.input.trim()}:** <t:${t.epoch}:f>(<t:${t.epoch}:R>)`)
     .join("\n");
 
   const componentRows: MessageActionRow[] = [];
