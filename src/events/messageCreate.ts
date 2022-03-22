@@ -162,7 +162,7 @@ export default async (bot: Client, msg: Message) => {
       new MessageEmbed()
         .setTitle("Timestring detected!")
         .setDescription(
-          `> ${msg.content.substring(0, 900)}\nServer: ${
+          `> ${msg.content.substring(0, 900).replace("\n", "\n> ")}\nServer: ${
             msg.guild?.name ?? "DMs"
           } (${msg.guild?.id ?? "DMs"})`
         )
