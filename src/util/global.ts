@@ -6,8 +6,8 @@ try {
 }
 
 export default {
-  PREFIX: config.PREFIX,
   TOKEN: config.TOKEN,
+  PORT: config.PORT,
   LOG: config.LOG,
   TOP_GG_TOKEN: config.TOP_GG_TOKEN,
   INFINITY_BOTS_TOKEN: config.INFINITY_BOTS_TOKEN,

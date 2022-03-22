@@ -38,7 +38,10 @@ export default new Command({
 
     const componentRows: MessageActionRow[] = [];
 
-    if (true)
+    if (
+      !usersDB.get(interaction.user.id)?.premExpiry ||
+      usersDB.get(interaction.user.id).premExpiry < Date.now()
+    )
       componentRows.push(
         new MessageActionRow().addComponents(
           new MessageButton()

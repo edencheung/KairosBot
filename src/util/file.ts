@@ -265,7 +265,7 @@ export class JSONObjectMap<
     [attribute: string]: any;
   }
 > extends JSONMap<T> {
-  setAttribute(key: string, attribute: keyof T, value: any) {
+  setAttribute<K extends keyof T>(key: string, attribute: K, value: T[K]) {
     const _ = this.read();
     if (_[key] == undefined) _[key] = <T>{};
     _[key][attribute] = value;

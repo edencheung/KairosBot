@@ -17,7 +17,7 @@ export default async (bot: Client, msg: Message) => {
   if (!/([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g.test(content)) return;
 
   //If the timezone is not set for the user
-  if (usersDB.get(msg.author.id) == undefined) {
+  if (usersDB.get(msg.author.id).timezone == undefined) {
     attachCallbackButtons(
       null,
       await msg.author.send({
@@ -33,7 +33,7 @@ export default async (bot: Client, msg: Message) => {
             await botMsg.reply(
               "Thanks for confirming. You will not see this message again."
             );
-            usersDB.setAttribute(msg.author.id, "timezone", undefined);
+            usersDB.setAttribute(msg.author.id, "timezone", null);
           },
         },
       ]
@@ -41,7 +41,8 @@ export default async (bot: Client, msg: Message) => {
     return;
   }
   // This means that the user has intentionally disabled timestring detection
-  if (usersDB.get(msg.author.id).timezone == undefined) return;
+  console.log(usersDB.get(msg.author.id));
+  if (usersDB.get(msg.author.id).timezone == null) return;
   if (!usersDB.get(msg.author.id).enabled) return;
 
   let timestamps: {
@@ -128,12 +129,15 @@ export default async (bot: Client, msg: Message) => {
     });
   }
   let description = timestamps
-    .map((t) => `**${t.input.trim()}:** <t:${t.epoch}:f>(<t:${t.epoch}:R>)`)
+    .map((t) => `**${t.input.trim()}:** <t:${t.epoch}:f> (<t:${t.epoch}:R>)`)
     .join("\n");
 
   const componentRows: MessageActionRow[] = [];
 
-  if (true)
+  if (
+    !usersDB.get(msg.author.id).premExpiry ||
+    usersDB.get(msg.author.id).premExpiry < Date.now()
+  )
     componentRows.push(
       new MessageActionRow().addComponents(
         new MessageButton()

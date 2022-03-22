@@ -5,6 +5,13 @@ import { MessageEmbed, TextChannel } from "discord.js";
 export const usersDB = new JSONObjectMap<{
   enabled: boolean;
   timezone: number;
+  premExpiry?: number;
+  topggNextVote?: number;
+  topggReminder?: boolean;
+  iblNextVote?: number;
+  iblReminder?: boolean;
+  dblNextVote?: number;
+  dblReminder?: boolean;
 }>("DB/users.json");
 
 export const timezones: {
@@ -56,10 +63,12 @@ export default new Command({
       }!`,
       ephemeral: true,
     });
-    usersDB.set(interaction.user.id, {
-      timezone: interaction.options.getNumber("timezone"),
-      enabled: true,
-    });
+    usersDB.setAttribute(
+      interaction.user.id,
+      "timezone",
+      interaction.options.getNumber("timezone")
+    );
+    usersDB.setAttribute(interaction.user.id, "enabled", true);
     const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
     logChannel?.send({
       embeds: [

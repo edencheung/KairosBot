@@ -1,6 +1,6 @@
 import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { timezones } from "./set-timezone";
+import { timezones, usersDB } from "./set-timezone";
 import {
   MessageActionRow,
   MessageButton,
@@ -34,7 +34,10 @@ export default new Command({
 
     const componentRows: MessageActionRow[] = [];
 
-    if (true)
+    if (
+      !usersDB.get(interaction.user.id)?.premExpiry ||
+      usersDB.get(interaction.user.id).premExpiry < Date.now()
+    )
       componentRows.push(
         new MessageActionRow().addComponents(
           new MessageButton()

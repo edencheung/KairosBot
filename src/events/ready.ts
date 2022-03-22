@@ -1,6 +1,7 @@
 import { Client, MessageEmbed, TextChannel } from "discord.js";
 import { config } from "..";
 import { postBotStats } from "../listing-manager";
+import { checkForVoteReminder } from "../votes";
 
 export default async (bot: Client) => {
   console.log(`${bot.user.username} is online!`);
@@ -19,4 +20,6 @@ export default async (bot: Client) => {
       ),
     180000
   );
+  checkForVoteReminder();
+  setInterval(checkForVoteReminder, 60 * 1000);
 };
