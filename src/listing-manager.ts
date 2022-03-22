@@ -73,7 +73,6 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post("/topgg", (req, res) => {
-  console.log(req);
   votes.emit("topgg", req.body.user, req.body.isWeekend);
   res.send(200);
 });
@@ -87,7 +86,7 @@ app.post("/ibl", (req, res) => {
 });
 
 app.listen(config.PORT, () => {
-  console.log(`Example app listening on port ${config.PORT}`);
+  console.log(`Listening on port ${config.PORT}`);
 });
 
 (async () => {

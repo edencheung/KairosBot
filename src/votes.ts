@@ -1,6 +1,10 @@
-import { ActionRow, ButtonComponent } from "@discordjs/builders";
-import { MessageActionRow, MessageButton, MessageEmbed } from "discord.js";
-import { bot } from ".";
+import {
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+  TextChannel,
+} from "discord.js";
+import { bot, config } from ".";
 import { usersDB } from "./commands/set-timezone";
 import { votes } from "./listing-manager";
 import { attachCallbackButtons } from "./util/interactions";
@@ -33,6 +37,15 @@ votes.on("topgg", async (id, isWeekend) => {
       new MessageEmbed()
         .setTitle("Thank you for voting on top.gg!")
         .setDescription(description),
+    ],
+  });
+  const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+  logChannel?.send({
+    embeds: [
+      new MessageEmbed().setTitle("Voted on Top.gg!").setAuthor({
+        name: discUser.tag,
+        iconURL: discUser.avatarURL(),
+      }),
     ],
   });
   if (!userData.topggReminder)
