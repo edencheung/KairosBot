@@ -62,13 +62,13 @@ votes.on("topgg", async (id, isWeekend) => {
 
 export async function checkForVoteReminder() {
   for (const [id, userData] of usersDB.entries()) {
-    if (!userData.topggNextVote) return;
+    if (!userData.topggNextVote) continue;
     if (
       userData.topggNextVote < Date.now() &&
       Date.now() - userData.topggNextVote < 60 * 1000
     ) {
       const discUser = await bot.users.fetch(id);
-      if (!discUser) return;
+      if (!discUser) continue;
       discUser.send({
         embeds: [
           new MessageEmbed()
