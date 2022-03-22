@@ -87,7 +87,7 @@ export default new Command({
       option
         .setName("include_raw")
         .setDescription(
-          "whether to include the raw timestamp string so that you can copy and paste it (defaults to false)"
+          "whether to include the raw timestamp string so that you can copy and paste it"
         )
         .setRequired(false)
     ),
@@ -106,21 +106,19 @@ export default new Command({
     let hourDiff = (interaction.options.getInteger("hour") ?? 0) - userHour;
     if (interaction.options.getString("am_pm") == "pm") hourDiff += 12;
 
-    const year = interaction.options.getInteger("year")
-      ? interaction.options.getInteger("year")
-      : dateObj.getUTCFullYear();
+    const year =
+      interaction.options.getInteger("year") ?? dateObj.getUTCFullYear();
 
-    const month = interaction.options.getInteger("month")
-      ? interaction.options.getInteger("month") - 1
-      : dateObj.getUTCMonth();
+    const month =
+      interaction.options.getInteger("month") ?? dateObj.getUTCMonth();
 
-    const date = interaction.options.getInteger("date")
-      ? interaction.options.getInteger("date")
-      : dateObj.getUTCDate();
+    const date = interaction.options.getInteger("date") ?? dateObj.getUTCDate();
 
     dateObj.setUTCFullYear(year, month, date);
-    dateObj.setUTCHours(dateObj.getUTCHours() + hourDiff);
-    dateObj.setUTCMinutes(interaction.options.getInteger("min") ?? 0);
+    if (interaction.options.getInteger("hour") !== null)
+      dateObj.setUTCHours(dateObj.getUTCHours() + hourDiff);
+    if (interaction.options.getInteger("min") !== null)
+      dateObj.setUTCMinutes(interaction.options.getInteger("min") ?? 0);
     dateObj.setUTCSeconds(0);
 
     const epoch = Math.round(dateObj.getTime() / 1000);

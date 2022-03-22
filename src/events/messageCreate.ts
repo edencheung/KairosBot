@@ -17,7 +17,7 @@ export default async (bot: Client, msg: Message) => {
   if (!/([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g.test(content)) return;
 
   //If the timezone is not set for the user
-  if (usersDB.get(msg.author.id).timezone == undefined) {
+  if (usersDB.get(msg.author.id)?.timezone == undefined) {
     attachCallbackButtons(
       null,
       await msg.author.send({
