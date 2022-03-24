@@ -7,11 +7,8 @@ export const usersDB = new JSONObjectMap<{
   timezone: number;
   premExpiry?: number;
   topggNextVote?: number;
-  topggReminder?: boolean;
   iblNextVote?: number;
-  iblReminder?: boolean;
   dblNextVote?: number;
-  dblReminder?: boolean;
 }>("DB/users.json");
 
 export const timezones: {

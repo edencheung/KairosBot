@@ -73,16 +73,19 @@ const app = express();
 app.use(bodyParser.json());
 
 app.post("/topgg", (req, res) => {
+  if (req.headers["authorization"] !== bot.token) return res.sendStatus(403);
   votes.emit("topgg", req.body.user, req.body.isWeekend);
-  res.send(200);
+  res.sendStatus(200);
 });
 
 app.post("/ibl", (req, res) => {
+  if (req.headers["authorization"] !== bot.token) return res.sendStatus(403);
   votes.emit(
     "ibl",
     req.body.userID,
     [5, 6, 7].includes(new Date().getUTCDay())
   );
+  res.sendStatus(200);
 });
 
 app.listen(config.PORT, () => {
