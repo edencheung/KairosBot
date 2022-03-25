@@ -126,10 +126,10 @@ export async function checkForVoteReminder() {
         components: [
           new MessageActionRow().setComponents(
             new MessageButton()
-              .setEmoji("953542648550023199")
+              .setEmoji("953548945458626601")
               .setStyle("LINK")
               .setLabel("Infinity bot list")
-              .setURL("https://top.gg/bot/950382032620503091/vote")
+              .setURL("https://infinitybots.gg/bots/950382032620503091/vote")
           ),
         ],
       });
