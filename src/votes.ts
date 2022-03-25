@@ -90,7 +90,7 @@ export async function checkForVoteReminder() {
   for (const [id, userData] of usersDB.entries()) {
     if (!userData.topggNextVote) continue;
 
-    const discUser = await bot.users.fetch(id);
+    const discUser = await bot.users.fetch(id).catch(() => {});
     if (!discUser) continue;
     if (
       userData.topggNextVote < Date.now() &&
