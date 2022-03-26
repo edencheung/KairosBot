@@ -60,4 +60,4 @@ bot.login(config.TOKEN);
 
 import "./votes";
 
-process.on("uncaughException", console.error)
+process.on("uncaughtException", console.error)
