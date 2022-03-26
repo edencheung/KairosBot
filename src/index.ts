@@ -59,3 +59,5 @@ readdir(path.join(__dirname, "events"), (err, files) => {
 bot.login(config.TOKEN);
 
 import "./votes";
+
+process.on("uncaughException", console.error)
