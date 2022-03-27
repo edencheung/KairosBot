@@ -19,6 +19,7 @@ votes.on("topgg", async (id, isWeekend) => {
       userData.premExpiry + duration
     );
   else usersDB.setAttribute(id, "premExpiry", now + duration);
+  usersDB.setAttribute(id, "topggNextVote", now + duration);
 
   userData = usersDB.get(id);
   const discUser = await bot.users.fetch(id);
