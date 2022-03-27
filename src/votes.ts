@@ -9,17 +9,16 @@ import { usersDB } from "./commands/set-timezone";
 import { votes } from "./listing-manager";
 
 votes.on("topgg", async (id, isWeekend) => {
-  const duration = (isWeekend ? 6 : 12) * 60 * 60 * 1000;
+  const duration = 12 * 60 * 60 * 1000;
   const now = Date.now();
   let userData = usersDB.get(id);
   if (userData?.premExpiry && userData.premExpiry > now)
     usersDB.setAttribute(
       id,
       "premExpiry",
-      userData.premExpiry + 12 * 60 * 60 * 1000
+      userData.premExpiry + duration
     );
-  else usersDB.setAttribute(id, "premExpiry", now + 12 * 60 * 60 * 1000);
-  usersDB.setAttribute(id, "topggNextVote", now + duration);
+  else usersDB.setAttribute(id, "premExpiry", now + duration);
 
   userData = usersDB.get(id);
   const discUser = await bot.users.fetch(id);
