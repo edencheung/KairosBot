@@ -64,7 +64,7 @@ process.on("uncaughtException", e => {
     const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
     logChannel?.send({
       embeds: [
-        new MessageEmbed().setDescription(`\`${e.substring(1000)}\``)
+        new MessageEmbed().setTitle('Error!').setDescription(`\`${e.substring(1000)}\``)
       ],
     });
 })
