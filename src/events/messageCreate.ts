@@ -148,7 +148,7 @@ export default async (bot: Client, msg: Message) => {
       )
     );
   try{
-    msg.reply({
+    await msg.reply({
       embeds: [
         new MessageEmbed().setColor(`#384c5c`).setDescription(description),
       ],
