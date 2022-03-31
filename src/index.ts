@@ -60,11 +60,11 @@ bot.login(config.TOKEN);
 
 import "./votes";
 
-process.on("uncaughtException", e => {
+process.on("uncaughtException", async e => {
     const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
     logChannel?.send({
       embeds: [
-        new MessageEmbed().setTitle('Error!').setDescription(`\`${e.substring(1000)}\``)
+        new MessageEmbed().setTitle(`${e.name}: ${e.message}`).setDescription(`\`${e.fileName}:${e.column}:${e.lineNumber}\``)
       ],
     });
 })
