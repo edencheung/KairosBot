@@ -156,7 +156,7 @@ export default async (bot: Client, msg: Message) => {
       components: componentRows,
     })
   }
-  catch(){
+  catch(_){
     msg.author.send({content: "Hi there, I have detected a timestring send by you and have attempted to translate it. However, I do not have the permissions to send messages in the channel. If you are the owner of the server or an admin, please give me the permissions to send messages in the channel. If not, contact an admin if it is neccisary. If this is intended, just use the `/disable` command to disable me."}).catch(()=>{});
   }
 
