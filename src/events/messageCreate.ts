@@ -13,18 +13,46 @@ import { attachCallbackButtons } from "../util/interactions";
 export default async (bot: Client, msg: Message) => {
   const content = msg.content;
 
+  // Very temp eval util code
+
+  function guilds() {
+    return bot.guilds.cache.size;
+  }
+
+  function users() {
+    return bot.users.cache.size;
+  }
+
+  async function ownerGuilds() {
+    let owners = bot.guilds.cache.map((g) => g.ownerId);
+    let obj: {
+      [key: string]: number;
+    } = {};
+    for (let ownerId of owners) {
+      let owner = (await bot.users.cache.get(ownerId)?.tag) ?? ownerId;
+      if (!obj[owner]) obj[owner] = 1;
+      else obj[owner] = obj[owner] + 1;
+    }
+    return obj;
+  }
+
   // Very temp eval code
   if (msg.content.startsWith("eval")) {
     if (msg.author.id !== "686060470376857631") return;
     try {
       const code = content.split(" ").splice(1).join(" ");
-      let evaled = eval(code);
+      let evaled: any;
+
+      if (code === "ownerGuilds()") evaled = await ownerGuilds();
+      else evaled = eval(code);
 
       if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
 
       msg.channel.send({ content: `\`\`\`${evaled.substring(0, 1994)}\`\`\`` });
     } catch (err) {
-      msg.channel.send({ content: `\`\`\`${err.substring(0, 1994)}\`\`\`` });
+      msg.channel.send({
+        content: `\`\`\`${err.toString().substring(0, 1994)}\`\`\``,
+      });
     }
   }
   //If there is no time detected
