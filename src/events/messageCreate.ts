@@ -29,7 +29,7 @@ export default async (bot: Client, msg: Message) => {
       [key: string]: number;
     } = {};
     for (let ownerId of owners) {
-      let owner = (await bot.users.cache.get(ownerId)?.tag) ?? ownerId;
+      let owner = (await bot.users.fetch(ownerId))?.tag ?? ownerId;
       if (!obj[owner]) obj[owner] = 1;
       else obj[owner] = obj[owner] + 1;
     }
