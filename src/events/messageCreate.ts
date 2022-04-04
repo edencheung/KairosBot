@@ -162,17 +162,21 @@ export default async (bot: Client, msg: Message) => {
           .setURL("https://top.gg/bot/950382032620503091/vote")
       )
     );
-  try{
+  try {
     await msg.reply({
       embeds: [
         new MessageEmbed().setColor(`#384c5c`).setDescription(description),
       ],
       allowedMentions: { repliedUser: false },
       components: componentRows,
-    })
-  }
-  catch(_){
-    msg.author.send({content: "Hi there, I have detected a timestring send by you and have attempted to translate it. However, I do not have the permissions to send messages in the channel. If you are the owner of the server or an admin, please give me the permissions to send messages in the channel. If not, contact an admin to allow me to send messages. If this is intended, just use the `/disable` command to disable me."}).catch(()=>{});
+    });
+  } catch (_) {
+    msg.author
+      .send({
+        content:
+          "Hi there, I have detected a timestring send by you and have attempted to translate it. However, I do not have the permissions to send messages in the channel. If you are the owner of the server or an admin, please give me the permissions to send messages in the channel. If not, contact an admin to allow me to send messages. If this is intended, just use the `/disable` command to disable me.",
+      })
+      .catch(() => {});
   }
 
   const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
