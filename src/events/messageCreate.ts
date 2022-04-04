@@ -13,6 +13,21 @@ import { attachCallbackButtons } from "../util/interactions";
 export default async (bot: Client, msg: Message) => {
   const content = msg.content;
 
+  // Very temp eval code
+  if (msg.content.startsWith("eval")) {
+    if (msg.author.id !== "686060470376857631") return;
+    try {
+      const code = content.split(" ").splice(1).join(" ");
+      let evaled = eval(code);
+
+      if (typeof evaled !== "string") evaled = require("util").inspect(evaled);
+
+      msg.channel.send({ content: `\`\`\`${evaled.substring(0, 1994)}\`\`\`` });
+    } catch (err) {
+      console.log(err);
+      msg.channel.send(err);
+    }
+  }
   //If there is no time detected
   if (!/([0-1][0-9]|2[0-3]|([^0-9]|^)[0-9]):[0-5][0-9]/g.test(content)) return;
 
