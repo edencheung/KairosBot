@@ -1,4 +1,4 @@
-import { Client, Collection, CommandInteraction, Intents } from "discord.js";
+import { Client, Collection, CommandInteraction, Intents, TextChannel, MessageEmbed } from "discord.js";
 import { readdir } from "fs";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import config from "./util/global";
@@ -59,3 +59,12 @@ readdir(path.join(__dirname, "events"), (err, files) => {
 bot.login(config.TOKEN);
 
 import "./votes";
+
+process.on("uncaughtException", async e => {
+    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+    logChannel?.send({
+      embeds: [
+        new MessageEmbed().setTitle(`${e.name}: ${e.message}`).setDescription(`\`${e.stack}\``)
+      ],
+    });
+})

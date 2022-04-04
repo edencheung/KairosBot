@@ -9,16 +9,16 @@ import { usersDB } from "./commands/set-timezone";
 import { votes } from "./listing-manager";
 
 votes.on("topgg", async (id, isWeekend) => {
-  const duration = (isWeekend ? 6 : 12) * 60 * 60 * 1000;
+  const duration = 12 * 60 * 60 * 1000;
   const now = Date.now();
   let userData = usersDB.get(id);
   if (userData?.premExpiry && userData.premExpiry > now)
     usersDB.setAttribute(
       id,
       "premExpiry",
-      userData.premExpiry + 12 * 60 * 60 * 1000
+      userData.premExpiry + duration
     );
-  else usersDB.setAttribute(id, "premExpiry", now + 12 * 60 * 60 * 1000);
+  else usersDB.setAttribute(id, "premExpiry", now + duration);
   usersDB.setAttribute(id, "topggNextVote", now + duration);
 
   userData = usersDB.get(id);
@@ -90,7 +90,7 @@ export async function checkForVoteReminder() {
   for (const [id, userData] of usersDB.entries()) {
     if (!userData.topggNextVote) continue;
 
-    const discUser = await bot.users.fetch(id);
+    const discUser = await bot.users.fetch(id).catch(() => {});
     if (!discUser) continue;
     if (
       userData.topggNextVote < Date.now() &&
@@ -126,10 +126,10 @@ export async function checkForVoteReminder() {
         components: [
           new MessageActionRow().setComponents(
             new MessageButton()
-              .setEmoji("953542648550023199")
+              .setEmoji("953548945458626601")
               .setStyle("LINK")
               .setLabel("Infinity bot list")
-              .setURL("https://top.gg/bot/950382032620503091/vote")
+              .setURL("https://infinitybots.gg/bots/950382032620503091/vote")
           ),
         ],
       });
