@@ -24,8 +24,7 @@ export default async (bot: Client, msg: Message) => {
 
       msg.channel.send({ content: `\`\`\`${evaled.substring(0, 1994)}\`\`\`` });
     } catch (err) {
-      console.log(err);
-      msg.channel.send(err);
+      msg.channel.send({ content: `\`\`\`${err.substring(0, 1994)}\`\`\`` });
     }
   }
   //If there is no time detected
