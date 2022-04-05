@@ -2,10 +2,6 @@ import { Api as TopggApi } from "@top-gg/sdk";
 import { InfinityBots } from "infinity-bots";
 import { bot, config } from ".";
 import axios from "axios";
-import { EventEmitter } from "stream";
-import * as express from "express";
-import localtunnel = require("localtunnel");
-import bodyParser = require("body-parser");
 
 const topggApi = new TopggApi(config.TOP_GG_TOKEN);
 
@@ -17,18 +13,30 @@ export const hasUserVoted = {
 };
 
 export async function postBotStats() {
-  //top gg
-  await topggApi.postStats({
+  // await postTopggStats();
+  // await postIblStats();
+  // await postDblStats();
+  // await postDelStats();
+  // await postDbotsggStats();
+  // await postDiscordsStats();
+}
+
+async function postTopggStats() {
+  return await topggApi.postStats({
     serverCount: bot.guilds.cache.size,
     shardCount: 1,
   });
-  //infinity bots
-  await infinityBotsApi.postBotStats({
+}
+
+async function postIblStats() {
+  return await infinityBotsApi.postBotStats({
     servers: bot.guilds.cache.size,
     shards: 1,
   });
-  // discord bot list
-  await axios.post(
+}
+
+async function postDblStats() {
+  return await axios.post(
     `https://discordbotlist.com/api/v1/bots/950382032620503091/stats`,
     {
       users: bot.users.cache.size,
@@ -41,8 +49,10 @@ export async function postBotStats() {
       },
     }
   );
-  // discord extreme list
-  await axios.post(
+}
+
+async function postDelStats() {
+  return await axios.post(
     `https://api.discordextremelist.xyz/v2/bot/950382032620503091/stats`,
     {
       guildCount: bot.guilds.cache.size,
@@ -53,8 +63,10 @@ export async function postBotStats() {
       },
     }
   );
-  //discord bots
-  await axios.post(
+}
+
+async function postDbotsggStats() {
+  return await axios.post(
     `https://discord.bots.gg/api/v1/bots/950382032620503091/stats`,
     {
       guildCount: bot.guilds.cache.size,
@@ -67,35 +79,16 @@ export async function postBotStats() {
   );
 }
 
-export const votes = new EventEmitter();
-
-const app = express();
-app.use(bodyParser.json());
-
-app.post("/topgg", (req, res) => {
-  if (req.headers["authorization"] !== bot.token) return res.sendStatus(403);
-  votes.emit("topgg", req.body.user, req.body.isWeekend);
-  res.sendStatus(200);
-});
-
-app.post("/ibl", (req, res) => {
-  if (req.headers["authorization"] !== bot.token) return res.sendStatus(403);
-  votes.emit(
-    "ibl",
-    req.body.userID,
-    [5, 6, 7].includes(new Date().getUTCDay())
+async function postDiscordsStats() {
+  return await axios.post(
+    `https://discords.com/bots/api/bot/950382032620503091`,
+    {
+      server_count: bot.guilds.cache.size,
+    },
+    {
+      headers: {
+        Authorization: config.DISCORDS_TOKEN,
+      },
+    }
   );
-  res.sendStatus(200);
-});
-
-app.listen(config.PORT, () => {
-  console.log(`Listening on port ${config.PORT}`);
-});
-
-(async () => {
-  const tunnel = await localtunnel({
-    port: config.PORT,
-    subdomain: "kairos-bot",
-  });
-  console.log(tunnel.url);
-})();
+}

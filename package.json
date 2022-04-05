@@ -35,10 +35,12 @@
     "discord-api-types": "^0.28.0",
     "discord.js": "^13.6.0",
     "express": "^4.17.3",
+    "express-subdomain": "^1.0.5",
     "infinity-bots": "^1.2.9",
-    "localtunnel": "^2.0.2"
+    "vhost": "^3.0.2"
   },
   "devDependencies": {
+    "@types/vhost": "^3.0.4",
     "@types/websocket": "^1.0.5"
   }
 }

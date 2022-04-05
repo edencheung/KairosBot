@@ -9,6 +9,7 @@ export const usersDB = new JSONObjectMap<{
   topggNextVote?: number;
   iblNextVote?: number;
   dblNextVote?: number;
+  discordsNextVote?: number;
 }>("DB/users.json");
 
 export const timezones: {

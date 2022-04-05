@@ -11,6 +11,7 @@ export default async (bot: Client) => {
   logChannel?.send({
     embeds: [new MessageEmbed().setTitle("I am now online!")],
   });
+  postBotStats();
   setInterval(
     () =>
       postBotStats().catch((e) =>
