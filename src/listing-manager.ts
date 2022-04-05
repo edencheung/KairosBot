@@ -13,12 +13,18 @@ export const hasUserVoted = {
 };
 
 export async function postBotStats() {
-  // await postTopggStats();
-  // await postIblStats();
-  // await postDblStats();
-  // await postDelStats();
-  // await postDbotsggStats();
-  // await postDiscordsStats();
+  await postTopggStats().catch((e) =>
+    console.log("Error posting to Top.gg | " + e)
+  );
+  await postIblStats().catch((e) => console.log("Error posting to Ibl | " + e));
+  await postDblStats().catch((e) => console.log("Error posting to Dpl | " + e));
+  await postDelStats().catch((e) => console.log("Error posting to Del | " + e));
+  await postDbotsggStats().catch((e) =>
+    console.log("Error posting to Dbotsgg | " + e)
+  );
+  await postDiscordsStats().catch((e) =>
+    console.log("Error posting to Discords | " + e)
+  );
 }
 
 async function postTopggStats() {
@@ -39,7 +45,10 @@ async function postDblStats() {
   return await axios.post(
     `https://discordbotlist.com/api/v1/bots/950382032620503091/stats`,
     {
-      users: bot.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
+      users: bot.guilds.cache.reduce(
+        (acc, guild) => acc + guild.memberCount,
+        0
+      ),
       guilds: bot.guilds.cache.size,
       voice_connections: 0,
     },
