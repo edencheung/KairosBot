@@ -1,13 +1,12 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/v9";
-import { CLIENT_ID, TOKEN } from "./config.json";
-import { Command } from ".";
+import { Command, config } from ".";
 import { readdir } from "fs/promises";
 import path = require("path");
 
 const commands: Array<any> = [];
 
-const rest = new REST({ version: "9" }).setToken(TOKEN);
+const rest = new REST({ version: "9" }).setToken(config.TOKEN);
 
 (async () => {
   const files = await readdir(path.join(__dirname, "commands"));
@@ -22,13 +21,13 @@ const rest = new REST({ version: "9" }).setToken(TOKEN);
     commands.push(command.data.toJSON());
   });
   await rest.put(
-    Routes.applicationGuildCommands(CLIENT_ID, "781129041969021000"),
+    Routes.applicationGuildCommands(config.CLIENT_ID, "781129041969021000"),
     {
       body: commands,
     }
   );
   await rest.put(
-    Routes.applicationGuildCommands(CLIENT_ID, "918787350849523772"),
+    Routes.applicationGuildCommands(config.CLIENT_ID, "918787350849523772"),
     {
       body: commands,
     }

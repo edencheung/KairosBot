@@ -7,6 +7,7 @@ try {
 
 export default {
   TOKEN: config.TOKEN,
+  CLIENT_ID: config.CLIENT_ID,
   PORT: config.PORT,
   LOG: config.LOG,
   DOMAIN: config.DOMAIN,
