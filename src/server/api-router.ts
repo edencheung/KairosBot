@@ -5,13 +5,15 @@ import { votes } from "./server";
 export const apiRouter = express.Router();
 
 apiRouter.post("/topgg", (req, res) => {
-  if (req.headers["authorization"] !== bot.token) return res.sendStatus(403);
+  if (req.headers["authorization"] !== "kairos bot is the best bot")
+    return res.sendStatus(403);
   votes.emit("topgg", req.body.user, req.body.isWeekend);
   res.sendStatus(200);
 });
 
 apiRouter.post("/ibl", (req, res) => {
-  if (req.headers["authorization"] !== bot.token) return res.sendStatus(403);
+  if (req.headers["authorization"] !== "kairos bot is the best bot")
+    return res.sendStatus(403);
   votes.emit(
     "ibl",
     req.body.userID,
