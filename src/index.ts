@@ -1,4 +1,11 @@
-import { Client, Collection, CommandInteraction, Intents, TextChannel, MessageEmbed } from "discord.js";
+import {
+  Client,
+  Collection,
+  CommandInteraction,
+  Intents,
+  TextChannel,
+  MessageEmbed,
+} from "discord.js";
 import { readdir } from "fs";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import config from "./util/global";
@@ -60,11 +67,14 @@ bot.login(config.TOKEN);
 
 import "./votes";
 
-process.on("uncaughtException", async e => {
-    const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
-    logChannel?.send({
-      embeds: [
-        new MessageEmbed().setTitle(`${e.name}: ${e.message}`).setDescription(`\`${e.stack}\``)
-      ],
-    });
-})
+process.on("uncaughtException", async (e) => {
+  console.log(e);
+  const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
+  logChannel?.send({
+    embeds: [
+      new MessageEmbed()
+        .setTitle(`${e.name}: ${e.message}`)
+        .setDescription(`\`${e.stack}\``),
+    ],
+  });
+});
