@@ -39,7 +39,7 @@ async function postDblStats() {
   return await axios.post(
     `https://discordbotlist.com/api/v1/bots/950382032620503091/stats`,
     {
-      users: bot.users.cache.size,
+      users: bot.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
       guilds: bot.guilds.cache.size,
       voice_connections: 0,
     },
