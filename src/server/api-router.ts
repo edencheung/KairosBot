@@ -28,3 +28,10 @@ apiRouter.post("/discords", (req, res) => {
   votes.emit("discords", req.body.user, false);
   res.sendStatus(200);
 });
+
+apiRouter.post("/dbl", (req, res) => {
+  if (req.headers["authorization"] !== "kairos bot is the best bot")
+    return res.sendStatus(403);
+  votes.emit("dbl", req.body.id, false);
+  res.sendStatus(200);
+});
