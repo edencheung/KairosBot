@@ -184,9 +184,9 @@ export default async (bot: Client, msg: Message) => {
     embeds.push(
       new MessageEmbed()
         .setDescription(
-          "Got any questions/suggestions/issues? Join the [support server](https://kairosbot.live/support)!\nn" +
-            "__**If you liked using this bot, please consider supporting Kairos Bot by voting on " +
-            "[Top.gg](https://top.gg/bot/950382032620503091/vote)! It is free!**__"
+          "If you liked using this bot, please consider supporting Kairos Bot by voting on " +
+            "__**[Top.gg](https://top.gg/bot/950382032620503091/vote)**__! It is free and would help a lot!\n\n" +
+            "Got any questions/suggestions/issues? Join the [support server](https://kairosbot.live/support)!"
         )
         .setFooter({
           text: "This attached message can be removed by voting.",
