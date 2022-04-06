@@ -17,9 +17,7 @@ export default new Command({
       .setTitle("Vote for me!")
       .setDescription("Here are some sites you can upvote me on.");
 
-    const buttonRow = new MessageActionRow().addComponents(
-      buttonRowGen(interaction.user.id)
-    );
+    const buttonRow = buttonRowGen(interaction.user.id);
 
     await interaction.reply({
       embeds: [embed0],

@@ -21,7 +21,7 @@ const rest = new REST({ version: "9" }).setToken(config.TOKEN);
     commands.push(command.data.toJSON());
   });
   await rest.put(
-    Routes.applicationGuildCommands(config.CLIENT_ID, "781129041969021000"),
+    Routes.applicationGuildCommands(config.CLIENT_ID, "961263675375771720"),
     {
       body: commands,
     }

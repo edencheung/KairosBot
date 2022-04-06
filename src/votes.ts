@@ -10,19 +10,20 @@ import { votes } from "./server/server";
 
 export function buttonRowGen(id: string) {
   let buttonRow = new MessageActionRow();
+  console.log(usersDB.get(id));
   const topggVoted =
-    usersDB.get(id).topggNextVote &&
+    !!usersDB.get(id).topggNextVote &&
     usersDB.get(id).topggNextVote >= Date.now();
   const iblVoted =
-    usersDB.get(id).iblNextVote && usersDB.get(id).iblNextVote >= Date.now();
+    !!usersDB.get(id).iblNextVote && usersDB.get(id).iblNextVote >= Date.now();
   const discordsVoted =
-    usersDB.get(id).discordsNextVote &&
+    !!usersDB.get(id).discordsNextVote &&
     usersDB.get(id).discordsNextVote >= Date.now();
   const dblVoted =
-    usersDB.get(id).dblNextVote && usersDB.get(id).dblNextVote >= Date.now();
+    !!usersDB.get(id).dblNextVote && usersDB.get(id).dblNextVote >= Date.now();
   buttonRow.addComponents(
     new MessageButton()
-      .setEmoji(topggVoted ? "953542648550023199" : "✅")
+      .setEmoji(!topggVoted ? "953542648550023199" : "✅")
       .setStyle("LINK")
       .setLabel("Top.gg")
       .setURL("https://top.gg/bot/950382032620503091/vote")
@@ -30,7 +31,7 @@ export function buttonRowGen(id: string) {
   );
   buttonRow.addComponents(
     new MessageButton()
-      .setEmoji(iblVoted ? "953548945458626601" : "✅")
+      .setEmoji(!iblVoted ? "953548945458626601" : "✅")
       .setStyle("LINK")
       .setLabel("Infinity Bots")
       .setURL("https://infinitybots.gg/bots/950382032620503091/vote")
@@ -38,7 +39,7 @@ export function buttonRowGen(id: string) {
   );
   buttonRow.addComponents(
     new MessageButton()
-      .setEmoji(discordsVoted ? "960865615457968178" : "✅")
+      .setEmoji(!discordsVoted ? "960865615457968178" : "✅")
       .setStyle("LINK")
       .setLabel("Discords")
       .setURL("https://discords.com/bots/bot/950382032620503091/vote")
@@ -46,7 +47,7 @@ export function buttonRowGen(id: string) {
   );
   buttonRow.addComponents(
     new MessageButton()
-      .setEmoji(dblVoted ? "953579545213161502" : "✅")
+      .setEmoji(!dblVoted ? "953579545213161502" : "✅")
       .setStyle("LINK")
       .setLabel("Discord Bot List")
       .setURL("https://discordbotlist.com/bots/kairosbot/upvote")
