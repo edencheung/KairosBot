@@ -173,29 +173,29 @@ export default async (bot: Client, msg: Message) => {
   let description = timestamps
     .map((t) => `**${t.input.trim()}:** <t:${t.epoch}:f> (<t:${t.epoch}:R>)`)
     .join("\n");
-
-  const componentRows: MessageActionRow[] = [];
+  const embeds = [
+    new MessageEmbed().setColor(`#384c5c`).setDescription(description),
+  ];
 
   if (
     !usersDB.get(msg.author.id).premExpiry ||
     usersDB.get(msg.author.id).premExpiry < Date.now()
   )
-    componentRows.push(
-      new MessageActionRow().addComponents(
-        new MessageButton()
-          .setEmoji("🔼")
-          .setLabel("If you like me, consider upvoting!")
-          .setStyle("LINK")
-          .setURL("https://top.gg/bot/950382032620503091/vote")
-      )
+    embeds.push(
+      new MessageEmbed()
+        .setDescription(
+          "Got any questions/suggestions/issues? Join the [support server](https://kairosbot.live/support)!\nn" +
+            "__**If you liked using this bot, please consider supporting Kairos Bot by voting on " +
+            "[Top.gg](https://top.gg/bot/950382032620503091/vote)! It is free!**__"
+        )
+        .setFooter({
+          text: "This attached message can be removed by voting.",
+        })
     );
   try {
     await msg.reply({
-      embeds: [
-        new MessageEmbed().setColor(`#384c5c`).setDescription(description),
-      ],
+      embeds,
       allowedMentions: { repliedUser: false },
-      components: componentRows,
     });
   } catch (_) {
     msg.author

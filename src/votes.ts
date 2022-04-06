@@ -8,7 +8,7 @@ import { bot, config } from ".";
 import { usersDB } from "./commands/set-timezone";
 import { votes } from "./server/server";
 
-function buttonRowGen(id: string) {
+export function buttonRowGen(id: string) {
   let buttonRow = new MessageActionRow();
   const topggVoted =
     usersDB.get(id).topggNextVote &&
@@ -85,7 +85,7 @@ votes.on("topgg", async (id) => {
         .setTitle("Thank you for voting on top.gg!")
         .setDescription(description),
       new MessageEmbed().setTitle(
-        "It would also really help if you leave a review, or vote on these other sites!"
+        "It would also really help a lot if you leave a review, or vote on these other sites!"
       ),
     ],
     components: [buttonRowGen(id)],
@@ -128,7 +128,7 @@ votes.on("ibl", async (id, isWeekend) => {
         .setTitle("Thank you for voting on infinity bot list!")
         .setDescription(description),
       new MessageEmbed().setTitle(
-        "It would also really help if you can vote on these other sites!"
+        "It would also really help a lot if you can vote on these other sites!"
       ),
     ],
     components: [buttonRowGen(id)],
@@ -167,7 +167,7 @@ votes.on("dbl", async (id) => {
         .setTitle("Thank you for voting on Discord Bot List!")
         .setDescription(description),
       new MessageEmbed().setTitle(
-        "It would also really help if you can vote on these other sites!"
+        "It would also really help a lot if you can vote on these other sites!"
       ),
     ],
     components: [buttonRowGen(id)],
