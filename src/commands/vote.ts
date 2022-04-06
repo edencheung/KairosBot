@@ -6,6 +6,7 @@ import {
 } from "discord.js";
 import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
+import { buttonRowGen } from "../votes";
 export default new Command({
   data: new SlashCommandBuilder()
     .setName("vote")
@@ -17,31 +18,7 @@ export default new Command({
       .setDescription("Here are some sites you can upvote me on.");
 
     const buttonRow = new MessageActionRow().addComponents(
-      new MessageButton()
-        .setEmoji("953542648550023199")
-        .setStyle("LINK")
-        .setLabel("Top.gg")
-        .setURL("https://top.gg/bot/950382032620503091/vote"),
-      new MessageButton()
-        .setEmoji("953548945458626601")
-        .setStyle("LINK")
-        .setLabel("Infinity Bots")
-        .setURL("https://infinitybots.gg/bots/950382032620503091/vote"),
-      new MessageButton()
-        .setEmoji("953579545213161502")
-        .setStyle("LINK")
-        .setLabel("Discord Bot List")
-        .setURL("https://discordbotlist.com/bots/kairosbot/upvote"),
-      new MessageButton()
-        .setEmoji("960865615457968178")
-        .setStyle("LINK")
-        .setLabel("Discords")
-        .setURL("https://discords.com/bots/bot/950382032620503091/vote"),
-      new MessageButton()
-        .setEmoji("953561327341817856")
-        .setStyle("LINK")
-        .setLabel("Discord Extreme List (Can only be voted once)")
-        .setURL("https://discordextremelist.xyz/en-US/bots/950382032620503091")
+      buttonRowGen(interaction.user.id)
     );
 
     await interaction.reply({
