@@ -43,6 +43,6 @@ Please read our [Privacy Policy](https://github.com/Eden4897/KairosBot/blob/main
 ## Contact
 
 - Join our [Support Server](https://discord.gg/J2xKqDKpGt) on discord
-- Contact me on discord (`Eden#2972`)
+- Direct message us on discord (`Eden#2972`)
 
 #### **Last changed:** `12th April 2022`
