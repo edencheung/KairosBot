@@ -23,7 +23,7 @@ It stores user IDs and their timezones because:
 - The automatic timestamp generation when the bot senses a time in a message will use the stored timezone to calculate the local time of the author so that the timestamp generated is relative to the author's local time.
 
 It stores timestamps because:
-- the bot will use the timestamps to remind users when they can vote
+- The bot will use the timestamps to remind users when they can vote
 
 ## 4. How long do you store my data for?
 
