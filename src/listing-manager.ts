@@ -1,15 +1,24 @@
 import { Api as TopggApi } from "@top-gg/sdk";
-import { InfinityBots } from "infinity-bots";
 import { bot, config } from ".";
 import axios from "axios";
 
+const { InfinityFetcher, InfinityPoster } = require("@infinitybots/node-sdk")
+
 const topggApi = new TopggApi(config.TOP_GG_TOKEN);
 
-const infinityBotsApi = new InfinityBots(config.INFINITY_BOTS_TOKEN);
+const infinityF = new InfinityFetcher({
+  auth: config.INFINITY_BOTS_TOKEN,
+  botID: bot.user.id,
+});
+
+const infinityP = new InfinityPoster({
+  auth: config.INFINITY_BOTS_TOKEN,
+  botID: bot.user.id,
+});
 
 export const hasUserVoted = {
   topgg: (userId: string) => topggApi.hasVoted(userId),
-  ibl: (userId: string) => infinityBotsApi.checkUserVoted(userId, bot.user.id),
+  ibl: (userId: string) => infinityF.getUserVotes(userId).has_voted,
 };
 
 export async function postBotStats() {
@@ -35,9 +44,10 @@ async function postTopggStats() {
 }
 
 async function postIblStats() {
-  return await infinityBotsApi.postBotStats({
+  return await infinityP.postBotStats({
     servers: bot.guilds.cache.size,
     shards: 1,
+    users: bot.users.cache.size
   });
 }
 
