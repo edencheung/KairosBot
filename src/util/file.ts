@@ -6,9 +6,8 @@ import {
   existsSync,
 } from "fs";
 import { get } from "https";
-import { bot, config } from "../index";
+import { bot } from "../index";
 import { Client } from "discord.js";
-import * as CryptoJS from "crypto-js";
 
 export class JSONDatabase<T> {
   path: string;
@@ -16,18 +15,10 @@ export class JSONDatabase<T> {
     this.path = path;
   }
   read(): T {
-    const encrypted = readFileSync(this.path).toString();
-    const decrypted = CryptoJS.AES.decrypt(encrypted, config.KEY).toString(
-      CryptoJS.enc.Utf8
-    );
-    return JSON.parse(decrypted);
+    return JSON.parse(readFileSync(this.path).toString());
   }
   write(data: T): T {
-    const encrypted = CryptoJS.AES.encrypt(
-      JSON.stringify(data),
-      config.KEY
-    ).toString();
-    writeFileSync(this.path, encrypted);
+    writeFileSync(this.path, JSON.stringify(data, null, 4));
     return this.read();
   }
 }

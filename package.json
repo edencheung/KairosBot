@@ -29,15 +29,19 @@
     "@infinitybots/node-sdk": "^0.1.4",
     "@top-gg/sdk": "^3.1.6",
     "axios": "^0.26.1",
-    "body-parser": "^1.19.2",
-    "crypto-js": "^4.1.1",
+    "body-parser": "^1.20.3",
+    "crypto-js": "^4.2.0",
     "discord-api-types": "^0.28.0",
-    "discord.js": "^13.6.0",
-    "express": "^4.17.3"
+    "discord.js": "^13.17.1",
+    "express": "^4.21.2",
+    "timezonecomplete": "^5.13.1",
+    "tzdata": "^1.0.43"
   },
   "devDependencies": {
     "@types/axios": "^0.9.36",
+    "@types/body-parser": "^1.19.5",
     "@types/crypto-js": "^4.1.1",
+    "@types/express": "^5.0.0",
     "@types/ip": "^1.1.0",
     "@types/node": "^17.0.45",
     "@types/vhost": "^3.0.4",

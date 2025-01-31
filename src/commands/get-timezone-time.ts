@@ -1,6 +1,6 @@
 import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { timezones, usersDB } from "./set-timezone";
+import { timezones } from "./set-timezone";
 import {
   MessageActionRow,
   MessageButton,
@@ -8,64 +8,42 @@ import {
   TextChannel,
 } from "discord.js";
 
+const tc = require("timezonecomplete");
+
 export default new Command({
   data: new SlashCommandBuilder()
     .setName("gettimezonetime")
     .setDescription("Gets the local time of a given timezone!")
-    .addNumberOption((option) =>
+    .addStringOption((option) =>
       option
         .setName("timezone")
         .setDescription("The timezone you want to check")
         .setRequired(true)
-        .setChoices(Object.entries(timezones))
+        .setAutocomplete(true)
     ),
   async execute(interaction) {
-    const tzName =
-      interaction.options.get("timezone").value >= 0
-        ? `UTC+${interaction.options.get("timezone").value}`
-        : `UTC${interaction.options.get("timezone").value}`;
-    const tzHour =
-      (new Date().getUTCHours() +
-        <number>interaction.options.get("timezone").value +
-        24) %
-      24;
-    const tzHourStr = ("0" + tzHour).slice(-2);
-    const tzMinStr = ("0" + new Date().getUTCMinutes()).slice(-2);
-
-    const componentRows: MessageActionRow[] = [];
-
-    if (
-      !usersDB.get(interaction.user.id)?.premExpiry ||
-      usersDB.get(interaction.user.id).premExpiry < Date.now()
-    )
-      componentRows.push(
-        new MessageActionRow().addComponents(
-          new MessageButton()
-            .setEmoji("🔼")
-            .setLabel("If you like me, consider upvoting!")
-            .setStyle("LINK")
-            .setURL("https://top.gg/bot/950382032620503091/vote")
-        )
-      );
-
-    interaction.reply({
-      content: `The local time for ${tzName} is \`${tzHourStr}:${tzMinStr}\`.`,
-      components: componentRows,
-    });
-
+    if(!timezones.includes(interaction.options.getString("timezone"))){
+      return interaction.reply({
+        content: "Invalid timezone provided. Please provide a valid timezone.",
+        ephemeral: true
+      });
+    }
     const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
     logChannel?.send({
       embeds: [
         new MessageEmbed()
           .setTitle("/gettimezonetime")
           .setDescription(
-            `timezone: ${interaction.options.getInteger("timezone")}`
+            `timezone: ${interaction.options.getString("timezone")}`
           )
           .setAuthor({
             name: interaction.user.tag,
             iconURL: interaction.user.avatarURL(),
           }),
       ],
+    });
+    return interaction.reply({
+      content: `The local time for ${interaction.options.getString("timezone")} is \`${tc.now(tc.zone(interaction.options.getString("timezone"))).hour()}:${tc.now(tc.zone(interaction.options.getString("timezone"))).minute()}\`.`,
     });
   },
 });

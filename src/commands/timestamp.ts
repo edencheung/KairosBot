@@ -7,6 +7,7 @@ import {
 import { bot, Command, config } from "..";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { timezones, usersDB } from "./set-timezone";
+const tc = require("timezonecomplete");
 
 export default new Command({
   data: new SlashCommandBuilder()
@@ -74,13 +75,13 @@ export default new Command({
         ])
         .setRequired(false)
     )
-    .addIntegerOption((option) =>
+    .addStringOption((option) =>
       option
         .setName("timezone")
         .setDescription(
           "Sets the timezone of the time (defaults to your timezone)"
         )
-        .setChoices(Object.entries(timezones))
+        .setAutocomplete(true)
         .setRequired(false)
     )
     .addBooleanOption((option) =>
@@ -92,71 +93,94 @@ export default new Command({
         .setRequired(false)
     ),
   async execute(interaction) {
-    const userTzOffset =
-      usersDB.get(interaction.user.id)?.timezone ??
-      interaction.options.getInteger("timezone");
-    if (userTzOffset === undefined)
+    const dateObj = new Date();
+    if(interaction.options.getInteger("month") == 2 && interaction.options.getInteger("date") > 29){
+      return interaction.reply({
+        content: "Invalid date provided for February.",
+        ephemeral: true
+      });
+    }
+    if(interaction.options.getInteger("month") == 4 || interaction.options.getInteger("month") == 6 || interaction.options.getInteger("month") == 9 || interaction.options.getInteger("month") == 11){
+      if(interaction.options.getInteger("date") > 30){
+        return interaction.reply({
+          content: "Invalid date provided for this month.",
+          ephemeral: true
+        });
+      }
+    }
+
+    const year = interaction.options.getInteger("year") ?? dateObj.getUTCFullYear();
+
+    const month = interaction.options.getInteger("month") ?? dateObj.getUTCMonth() + 1;
+
+    let date = interaction.options.getInteger("date") ?? dateObj.getUTCDate();
+    
+    let hour = interaction.options.getInteger("hour") ?? dateObj.getUTCHours();
+
+    const min = interaction.options.getInteger("min") ?? dateObj.getUTCMinutes();
+
+    if (interaction.options.getInteger("am_pm") == 12){
+      console.log(hour)
+      if(interaction.options.getInteger("hour") != 12){
+        if(hour < 12) hour = hour + 12;
+        else {
+          hour = hour - 12;
+          date = date + 1;
+        }
+      } 
+      console.log(hour)
+    }
+
+    let userTzOffset: number | null  = null
+
+    if(interaction.options.getString("timezone") && !timezones.includes(interaction.options.getString("timezone"))){
+      return interaction.reply({
+        content: "Invalid timezone provided. Please provide a valid timezone.",
+        ephemeral: true
+    });
+    }
+
+    if(interaction.options.getString("timezone")) {
+      userTzOffset = tc.zone(interaction.options.getString("timezone")).offsetForUtc(year, month, date, hour, min, 0)
+    }
+    else if(usersDB.get(interaction.user.id)?.timezone == null && interaction.options.getString("timezone") == null) {
       return interaction.reply(
         "Please use the `/setmytimezone` command to set your timezone first or provide a timezone for the time."
       );
-
-    const dateObj = new Date();
-
-    const userHour = (userTzOffset + dateObj.getUTCHours() + 24) % 24;
-    let hourDiff = (interaction.options.getInteger("hour") ?? 0) - userHour;
-    if (interaction.options.getString("am_pm") == "pm") hourDiff += 12;
-
-    const year =
-      interaction.options.getInteger("year") ?? dateObj.getUTCFullYear();
-
-    const month =
-      interaction.options.getInteger("month") ?? dateObj.getUTCMonth();
-
-    const date = interaction.options.getInteger("date") ?? dateObj.getUTCDate();
-
-    dateObj.setUTCFullYear(year, month, date);
-    if (interaction.options.getInteger("hour") !== null)
-      dateObj.setUTCHours(dateObj.getUTCHours() + hourDiff);
-    if (interaction.options.getInteger("min") !== null)
-      dateObj.setUTCMinutes(interaction.options.getInteger("min") ?? 0);
-    dateObj.setUTCSeconds(0);
+    }
+    else if(usersDB.get(interaction.user.id)?.timezone instanceof String || typeof usersDB.get(interaction.user.id)?.timezone === 'string') {
+      userTzOffset = tc.zone(usersDB.get(interaction.user.id)?.timezone).offsetForUtc(year, month, date, hour, min, 0)
+    }
+    else if(usersDB.get(interaction.user.id)?.timezone instanceof Number || typeof usersDB.get(interaction.user.id)?.timezone === 'number') {
+      userTzOffset = usersDB.get(interaction.user.id)?.timezone * 60
+    }
+         
+    if (userTzOffset === null){
+      return interaction.reply(
+        "Please use the `/setmytimezone` command to set your timezone first or provide a timezone for the time."
+      );
+    }
+    dateObj.setUTCFullYear(year);
+    dateObj.setUTCMonth(month - 1);
+    dateObj.setUTCDate(date);
+    if(hour - Math.floor(userTzOffset / 60) < 24 && hour - Math.floor(userTzOffset / 60) >= 0){
+      dateObj.setUTCHours(hour - Math.floor(userTzOffset / 60));
+    }
+    else if(hour - Math.floor(userTzOffset / 60) >= 24){
+      dateObj.setUTCHours(hour - Math.floor(userTzOffset / 60) - 24);
+      dateObj.setUTCDate(date + 1);
+    }
+    else if(hour - Math.floor(userTzOffset / 60) < 0){
+      dateObj.setUTCHours(hour - Math.floor(userTzOffset / 60) + 24);
+      dateObj.setUTCDate(date - 1);
+    }
+    dateObj.setUTCMinutes(min - userTzOffset % 60);
+    
 
     const epoch = Math.round(dateObj.getTime() / 1000);
 
     const componentRows: MessageActionRow[] = [];
 
-    if (
-      !usersDB.get(interaction.user.id)?.premExpiry ||
-      usersDB.get(interaction.user.id).premExpiry < Date.now()
-    )
-      componentRows.push(
-        new MessageActionRow().addComponents(
-          new MessageButton()
-            .setEmoji("🔼")
-            .setLabel("If you like me, consider upvoting!")
-            .setStyle("LINK")
-            .setURL("https://top.gg/bot/950382032620503091/vote")
-        )
-      );
-
-    interaction.reply({
-      embeds: [
-        new MessageEmbed()
-          .setColor(`#384c5c`)
-          .setDescription(
-            `<t:${epoch}:${
-              interaction.options.getString("date_format") ?? "R"
-            }>${
-              interaction.options.getBoolean("include_raw")
-                ? `\nRaw text: \`<t:${epoch}:${
-                    interaction.options.getString("date_format") ?? "R"
-                  }>\``
-                : ""
-            }`
-          ),
-      ],
-      components: componentRows,
-    });
     const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
     logChannel?.send({
       embeds: [
@@ -177,7 +201,7 @@ export default new Command({
             {
               name: "am_pm",
               value:
-                interaction.options.getBoolean("am_pm")?.toString() ?? "N/A",
+                interaction.options.getInteger("am_pm")?.toString() ?? "N/A",
               inline: true,
             },
             {
@@ -206,7 +230,7 @@ export default new Command({
             {
               name: "timezone",
               value:
-                interaction.options.getInteger("timezone")?.toString() ?? "N/A",
+                interaction.options.getString("timezone") ?? "N/A",
               inline: true,
             },
             {
@@ -222,6 +246,25 @@ export default new Command({
             iconURL: interaction.user.avatarURL(),
           }),
       ],
+    });
+
+    return interaction.reply({
+      embeds: [
+        new MessageEmbed()
+          .setColor(`#384c5c`)
+          .setDescription(
+            `<t:${epoch}:${
+              interaction.options.getString("date_format") ?? "R"
+            }>${
+              interaction.options.getBoolean("include_raw")
+                ? `\nRaw text: \`<t:${epoch}:${
+                    interaction.options.getString("date_format") ?? "R"
+                  }>\``
+                : ""
+            }`
+          ),
+      ],
+      components: componentRows,
     });
   },
 });
