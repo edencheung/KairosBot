@@ -93,7 +93,7 @@ export default new Command({
         .setRequired(false)
     ),
   async execute(interaction) {
-    const dateObj = new Date();
+    let dateObj = new Date();
     if(interaction.options.getInteger("month") == 2 && interaction.options.getInteger("date") > 29){
       return interaction.reply({
         content: "Invalid date provided for February.",
@@ -120,15 +120,13 @@ export default new Command({
     const min = interaction.options.getInteger("min") ?? dateObj.getUTCMinutes();
 
     if (interaction.options.getInteger("am_pm") == 12){
-      console.log(hour)
       if(interaction.options.getInteger("hour") != 12){
         if(hour < 12) hour = hour + 12;
         else {
           hour = hour - 12;
           date = date + 1;
         }
-      } 
-      console.log(hour)
+      }
     }
 
     let userTzOffset: number | null  = null
@@ -175,7 +173,10 @@ export default new Command({
       dateObj.setUTCDate(date - 1);
     }
     dateObj.setUTCMinutes(min - userTzOffset % 60);
-    
+
+    if(!interaction.options.getInteger("month") && !interaction.options.getInteger("date") && !interaction.options.getInteger("year") && !interaction.options.getInteger("hour") && !interaction.options.getInteger("min") && !interaction.options.getInteger("am_pm")){
+      dateObj = new Date();
+    }
 
     const epoch = Math.round(dateObj.getTime() / 1000);
 
