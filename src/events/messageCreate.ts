@@ -10,6 +10,8 @@ import { config } from "..";
 import { usersDB } from "../commands/set-timezone";
 import { attachCallbackButtons } from "../util/interactions";
 
+const tc = require("timezonecomplete");
+
 export default async (bot: Client, msg: Message) => {
   const content = msg.content;
 
@@ -36,6 +38,7 @@ export default async (bot: Client, msg: Message) => {
     return obj;
   }
 
+  if(msg.author.id == bot.user.id) return;
   // Very temp eval code
   if (msg.content.startsWith("eval")) {
     if (msg.author.id !== "686060470376857631") return;
@@ -83,7 +86,6 @@ export default async (bot: Client, msg: Message) => {
     return;
   }
   // This means that the user has intentionally disabled timestring detection
-  console.log(usersDB.get(msg.author.id));
   if (usersDB.get(msg.author.id).timezone == null) return;
   if (!usersDB.get(msg.author.id).enabled) return;
 
@@ -155,14 +157,20 @@ export default async (bot: Client, msg: Message) => {
     const inputDateStr = content.substring(index, index + inputDateStrLength);
 
     //make time
-    const userTzOffset = usersDB.get(msg.author.id).timezone;
+    let userTzOffset = usersDB.get(msg.author.id).timezone;
     const date = new Date();
+    let minOffset = 0
+    if(typeof usersDB.get(msg.author.id).timezone === "number") userTzOffset = usersDB.get(msg.author.id).timezone;
+    else if(typeof usersDB.get(msg.author.id).timezone === "string") {
+      userTzOffset = Math.floor(tc.zone(usersDB.get(msg.author.id).timezone).offsetForUtc(date.getFullYear(), date.getMonth() + 1, date.getDate()+dayDiff, date.getHours(), date.getMinutes(), date.getSeconds())/60);
+      minOffset = tc.zone(usersDB.get(msg.author.id).timezone).offsetForUtc(date.getFullYear(), date.getMonth() + 1, date.getDate()+dayDiff, date.getHours(), date.getMinutes(), date.getSeconds()) % 60;
+    }
     const UCTHour = date.getUTCHours();
     const userHour = (userTzOffset + UCTHour + 24) % 24;
     const hourDiff = hour - userHour;
     date.setUTCDate(date.getUTCDate() + dayDiff);
     date.setUTCHours(UCTHour + hourDiff);
-    date.setUTCMinutes(min);
+    date.setUTCMinutes(min - minOffset);
     date.setUTCSeconds(0);
 
     timestamps.push({
@@ -177,21 +185,6 @@ export default async (bot: Client, msg: Message) => {
     new MessageEmbed().setColor(`#384c5c`).setDescription(description),
   ];
 
-  if (
-    !usersDB.get(msg.author.id).premExpiry ||
-    usersDB.get(msg.author.id).premExpiry < Date.now()
-  )
-    embeds.push(
-      new MessageEmbed()
-        .setDescription(
-          "If you liked using this bot, please consider supporting Kairos Bot by voting on " +
-            "__**[Top.gg](https://top.gg/bot/950382032620503091/vote)**__! It is free and would help a lot!\n\n" +
-            "Got any questions/suggestions/issues? Join the [support server](https://kairosbot.live/support)!"
-        )
-        .setFooter({
-          text: "This attached message can be removed by voting.",
-        })
-    );
   try {
     await msg.reply({
       embeds,

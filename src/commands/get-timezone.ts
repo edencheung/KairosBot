@@ -21,14 +21,6 @@ export default new Command({
     )?.timezone;
     const userTag =
       interaction.options.getUser("user")?.tag ?? interaction.user.tag;
-    interaction.reply({
-      content: `${userTag}'s timezone is ${
-        userTz !== undefined
-          ? "UTC" + (userTz >= 0 ? "+" : "") + userTz
-          : "unassigned yet"
-      }.`,
-    });
-
     const logChannel = <TextChannel>await bot.channels.fetch(config.LOG);
     logChannel?.send({
       embeds: [
@@ -42,6 +34,18 @@ export default new Command({
             iconURL: interaction.user.avatarURL(),
           }),
       ],
+    });
+    if (typeof userTz === "string") {
+      return interaction.reply({
+        content: `${userTag}'s timezone is ${userTz}.`,
+      });
+    }
+    else return interaction.reply({
+      content: `${userTag}'s timezone is ${
+        userTz !== undefined
+          ? "UTC" + (userTz >= 0 ? "+" : "") + userTz
+          : "unassigned yet"
+      }.`,
     });
   },
 });

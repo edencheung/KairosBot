@@ -8,6 +8,8 @@ import {
   TextChannel,
 } from "discord.js";
 
+const tc = require("timezonecomplete");
+
 export default new Command({
   data: new SlashCommandBuilder()
     .setName("getusertime")
@@ -31,26 +33,16 @@ export default new Command({
         `${userTag} has not configured their timezone yet.`
       );
 
-    let description = `\`${(
+    let description = "";
+
+    if(typeof userTz === "string") description = `${tc.now(tc.zone(userTz)).hour()}:${tc.now(tc.zone(userTz)).minute()}.`;
+    
+    else description = `\`${(
       "0" +
       ((new Date().getUTCHours() + userTz + 24) % 24)
     ).slice(-2)}:${("0" + new Date().getUTCMinutes()).slice(-2)}\`.`;
 
     const componentRows: MessageActionRow[] = [];
-
-    if (
-      !usersDB.get(interaction.user.id)?.premExpiry ||
-      usersDB.get(interaction.user.id).premExpiry < Date.now()
-    )
-      componentRows.push(
-        new MessageActionRow().addComponents(
-          new MessageButton()
-            .setEmoji("🔼")
-            .setLabel("If you like me, consider upvoting!")
-            .setStyle("LINK")
-            .setURL("https://top.gg/bot/950382032620503091/vote")
-        )
-      );
 
     interaction.reply({
       embeds: [
